@@ -7,7 +7,6 @@ body {
     padding: 0 20px;
 }
 
-/* Überschriften */
 h1 {
     color: #0056b3;
     text-align: center;
@@ -23,7 +22,6 @@ h2 {
     font-size: 1.5em;
 }
 
-/* Absätze */
 p {
     margin-bottom: 15px;
     font-size: 1em;
@@ -39,14 +37,11 @@ li {
     margin-bottom: 8px;
 }
 
-/* Container (optional, wenn du alles zentrieren willst) */
 body > * {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
 }
-
-/* Links, falls du welche hinzufügst */
 a {
     color: #007bff;
     text-decoration: none;
@@ -56,7 +51,7 @@ a {
         text-decoration: underline;
     }
 
-/* Kleine dekorative Linien unter h1 */
+
 h1::after {
     content: "";
     display: block;
