@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\pekin\\source\\repos\\Bluetooth-and-NFC\\",
+  "WorkspaceRootPath": "C:\\Users\\pekin\\source\\repos\\JojoChu337\\Bluetooth-and-NFC\\",
   "Documents": [],
   "DocumentGroupContainers": [
     {
@@ -11,6 +11,10 @@
           "DockedWidth": 200,
           "SelectedChildIndex": -1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
