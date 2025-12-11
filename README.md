@@ -47,20 +47,16 @@ Fertigstellung rechtzeitig vor der Präsentation.
 
 Projektstart: 10.11.2025
 
-Seitenstruktur & Navigation fertig: Datum eintragen
-Bluetooth-Seite fertig: Datum eintragen
-NFC-Seite fertig: Datum eintragen
-Vergleichsseite & Bilder: Datum eintragen
-Finales Testing & Präsentationsvorbereitung: Datum eintragen
-Projektende / Abgabe: Datum eintragen
+Seitenstruktur & Navigation fertig: ...
+Bluetooth-Seite fertig: ...
+NFC-Seite fertig: ...
+Vergleichsseite & Bilder: ...
+Finales Testing & Präsentationsvorbereitung: ...
+Projektende / Abgabe: ...
 
 
-Aufgabenverteilung:
 
-Tunahan: Design, Auswahl und Bearbeitung der Bilder, Styling.
 
-Joey: Recherche, Textinhalte, Quellenangaben.
 
-Gemeinsam: HTML-Grundgerüst, Integration der Inhalte, finale Präsentation.
 
 
