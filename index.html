@@ -242,7 +242,10 @@ This shows that both technologies are often used together.
 `
 
 };
-
+function show(name){
+    document.getElementById("content").innerHTML = data[name];
+    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+    event.target.classList.add("active");
 
 }
 function checkAnswer(ans, correct=false){
@@ -261,6 +264,7 @@ show("intro");
 </script>
 </body>
 </html>
+
 
 
 
