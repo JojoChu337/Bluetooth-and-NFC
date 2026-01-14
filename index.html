@@ -1,648 +1,266 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Bluetooth & NFC – einfach und trotzdem tief erklärt</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        :root {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            line-height: 1.6;
-            color: #111827;
-            background: #0f172a;
-        }
-
-        body {
-            margin: 0;
-            background: radial-gradient(circle at top, #1e293b, #020617);
-            color: #e5e7eb;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 1.5rem;
-        }
-
-        header {
-            text-align: center;
-            padding: 1.5rem 1rem 1rem;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: clamp(2rem, 3vw, 2.6rem);
-            color: #facc15;
-        }
-
-        header p {
-            margin: 0.5rem 0 0;
-            color: #cbd5f5;
-        }
-
-        .tagline {
-            font-size: 0.95rem;
-            opacity: 0.9;
-        }
-
-        nav {
-            margin: 1.5rem auto 2rem;
-            max-width: 900px;
-            background: rgba(15,23,42,0.9);
-            border-radius: 999px;
-            padding: 0.5rem;
-            border: 1px solid rgba(148,163,184,0.5);
-            backdrop-filter: blur(10px);
-        }
-
-        nav ul {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
-
-        nav a {
-            display: block;
-            padding: 0.4rem 0.9rem;
-            font-size: 0.9rem;
-            text-decoration: none;
-            color: #e5e7eb;
-            border-radius: 999px;
-            border: 1px solid transparent;
-            transition: 0.2s;
-            white-space: nowrap;
-        }
-
-        nav a:hover {
-            background: rgba(248,250,252,0.08);
-            border-color: rgba(148,163,184,0.7);
-        }
-
-        main {
-            display: grid;
-            grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
-            gap: 1.5rem;
-        }
-
-        @media (max-width: 850px) {
-            main {
-                grid-template-columns: 1fr;
-            }
-
-            nav {
-                border-radius: 1rem;
-            }
-        }
-
-        section {
-            margin-bottom: 1.5rem;
-        }
-
-        h2 {
-            font-size: 1.4rem;
-            margin-bottom: 0.4rem;
-            color: #facc15;
-        }
-
-        h3 {
-            font-size: 1.1rem;
-            margin-top: 1rem;
-            margin-bottom: 0.2rem;
-            color: #e5e7eb;
-        }
-
-        p {
-            margin-top: 0.25rem;
-            margin-bottom: 0.5rem;
-            font-size: 0.98rem;
-            color: #e5e7eb;
-        }
-
-        .card {
-            background: rgba(15,23,42,0.95);
-            border-radius: 1rem;
-            padding: 1rem 1.1rem;
-            border: 1px solid rgba(148,163,184,0.5);
-            box-shadow: 0 18px 40px rgba(15,23,42,0.6);
-        }
-
-        .card.highlight {
-            border-color: #facc15;
-        }
-
-        .badge-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin: 0.4rem 0 0.7rem;
-        }
-
-        .badge {
-            font-size: 0.75rem;
-            padding: 0.15rem 0.5rem;
-            border-radius: 999px;
-            border: 1px solid rgba(148,163,184,0.6);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            opacity: 0.9;
-        }
-
-        .badge.bluetooth {
-            border-color: #38bdf8;
-        }
-
-        .badge.nfc {
-            border-color: #a855f7;
-        }
-
-        .badge.security {
-            border-color: #4ade80;
-        }
-
-        ul {
-            padding-left: 1.2rem;
-            margin: 0.3rem 0 0.7rem;
-        }
-
-        li {
-            margin-bottom: 0.2rem;
-            font-size: 0.96rem;
-        }
-
-        .columns-2 {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.9rem;
-        }
-
-        @media (max-width: 700px) {
-            .columns-2 {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .pill-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-top: 0.4rem;
-        }
-
-        .pill {
-            font-size: 0.8rem;
-            padding: 0.15rem 0.6rem;
-            border-radius: 999px;
-            background: rgba(15,23,42,0.9);
-            border: 1px solid rgba(148,163,184,0.6);
-        }
-
-        .table {
-            margin-top: 0.5rem;
-            border-radius: 0.9rem;
-            overflow: hidden;
-            border: 1px solid rgba(148,163,184,0.7);
-        }
-
-        .table-header,
-        .table-row {
-            display: grid;
-            grid-template-columns: 1.3fr 1fr 1fr;
-        }
-
-        .table-header {
-            background: rgba(15,23,42,0.95);
-            font-weight: 600;
-        }
-
-        .table-cell {
-            padding: 0.5rem 0.7rem;
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(51,65,85,0.9);
-        }
-
-        .table-header .table-cell {
-            border-top: none;
-            border-right: 1px solid rgba(51,65,85,0.9);
-        }
-
-        .table-header .table-cell:last-child {
-            border-right: none;
-        }
-
-        .table-row:nth-child(odd) {
-            background: rgba(15,23,42,0.9);
-        }
-
-        .table-row:nth-child(even) {
-            background: rgba(15,23,42,0.75);
-        }
-
-        .side-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .tip {
-            font-size: 0.9rem;
-            border-left: 3px solid #facc15;
-            padding-left: 0.7rem;
-            margin-top: 0.3rem;
-            color: #e5e7eb;
-        }
-
-        .timeline {
-            position: relative;
-            margin: 0.5rem 0 0.3rem;
-            padding-left: 1.3rem;
-        }
-
-        .timeline::before {
-            content: "";
-            position: absolute;
-            left: 4px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: rgba(148,163,184,0.8);
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-left: 0.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-item::before {
-            content: "";
-            position: absolute;
-            left: -0.2rem;
-            top: 0.25rem;
-            width: 8px;
-            height: 8px;
-            border-radius: 999px;
-            background: #facc15;
-            box-shadow: 0 0 0 3px rgba(234,179,8,0.3);
-        }
-
-        .timeline-year {
-            font-weight: 600;
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: #e5e7eb;
-        }
-
-        .timeline-text {
-            font-size: 0.9rem;
-        }
-
-        footer {
-            margin-top: 1rem;
-            padding: 1rem 0 0.2rem;
-            font-size: 0.85rem;
-            text-align: center;
-            color: #9ca3af;
-        }
-
-        .keyword {
-            font-weight: 600;
-            color: #fde68a;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Bluetooth & NFC – Complete Educational Project</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="wrapper">
-    <header>
-        <h1>Bluetooth &amp; NFC – Funktechnologien im Alltag verstehen</h1>
-        <p class="tagline">Wie kommunizieren Geräte kabellos miteinander – und was ist der Unterschied zwischen Bluetooth und NFC?</p>
-    </header>
+<header>
+<h1>Bluetooth & NFC – Complete Educational Project</h1>
+<p>Interactive learning website about wireless short-range technologies</p>
+</header>
 
-    <nav>
-        <ul>
-            <li><a href="#grundlagen">Grundlagen</a></li>
-            <li><a href="#bluetooth">Bluetooth im Detail</a></li>
-            <li><a href="#nfc">NFC im Detail</a></li>
-            <li><a href="#vergleich">Vergleich &amp; Einsatz</a></li>
-            <li><a href="#sicherheit">Sicherheit</a></li>
-            <li><a href="#zusammenfassung">Kurz-Zusammenfassung</a></li>
-        </ul>
-    </nav>
+<nav>
+<button onclick="show('intro')">Introduction</button>
+<button onclick="show('bluetooth')">Bluetooth Technology</button>
+<button onclick="show('nfc')">NFC Technology</button>
+<button onclick="show('security')">Security & Risks</button>
+<button onclick="show('comparison')">Comparison & Use Cases</button>
+</nav>
 
-    <main>
-        <!-- Hauptspalte -->
-        <div>
-            <section id="grundlagen" class="card highlight">
-                <h2>1. Grundlagen: Was haben Bluetooth &amp; NFC gemeinsam?</h2>
-                <p>
-                    Sowohl <span class="keyword">Bluetooth</span> als auch <span class="keyword">NFC (Near Field Communication)</span> sind
-                    Funktechnologien. Das bedeutet: Daten werden <strong>kabellos</strong> über elektromagnetische Wellen übertragen.
-                </p>
-                <div class="badge-row">
-                    <span class="badge">Funktechnik</span>
-                    <span class="badge">kabellos</span>
-                    <span class="badge">Kurzstrecke</span>
-                </div>
-                <h3>Gemeinsame Eigenschaften</h3>
-                <ul>
-                    <li>Beide arbeiten auf <strong>kurze Distanz</strong> (kein WLAN über mehrere Räume).</li>
-                    <li>Sie ersetzen oft <strong>Kabel</strong> (z. B. Kopfhörerkabel, Geldbörse, Schlüsselkarte).</li>
-                    <li>Sie werden vor allem in <strong>Smartphones</strong> und <strong>Alltagsgeräten</strong> genutzt.</li>
-                </ul>
-                <p class="tip">
-                    Denk dir Bluetooth wie ein <strong>unsichtbares Kabel</strong> für Musik &amp; Daten –  
-                    und NFC wie ein <strong>digitales Antippen</strong> zum Bezahlen oder Entsperren.
-                </p>
-            </section>
+<main id="content"></main>
 
-            <section id="bluetooth" class="card">
-                <h2>2. Bluetooth – das unsichtbare Verbindungskabel</h2>
-                <div class="badge-row">
-                    <span class="badge bluetooth">Bluetooth</span>
-                    <span class="badge">bis ca. 10–100 m</span>
-                    <span class="badge">Audio &amp; Daten</span>
-                </div>
+<script>
+const data = {
+intro: `
+<h2>Introduction</h2>
 
-                <h3>Was ist Bluetooth?</h3>
-                <p>
-                    Bluetooth ist eine Funktechnologie, die Geräte in einem persönlichen Bereich verbindet:
-                    Handy, Kopfhörer, Lautsprecher, Maus, Tastatur, Smartwatch usw. Man spricht auch von
-                    einem <strong>Personal Area Network (PAN)</strong>.
-                </p>
+<p>
+Bluetooth and Near Field Communication (NFC) are two of the most important short-range wireless communication
+technologies in modern digital society. They are embedded in almost every smartphone, tablet, laptop and
+smart device and enable a wide variety of everyday activities.
+</p>
 
-                <h3>Technische Eckdaten (einfach erklärt)</h3>
-                <ul>
-                    <li><strong>Frequenz:</strong> 2,4 GHz (ähnlich wie viele WLAN-Netze).</li>
-                    <li><strong>Reichweite:</strong> typisch ca. 10 Meter, bei bestimmten Geräten bis zu ca. 100 Meter.</li>
-                    <li><strong>Geschwindigkeit:</strong> je nach Version – z. B. Bluetooth 5 kann theoretisch mehrere Mbit/s übertragen.</li>
-                    <li><strong>Energieverbrauch:</strong> mit <em>Bluetooth Low Energy (BLE)</em> auch für Fitness-Tracker &amp; Sensoren geeignet.</li>
-                </ul>
+<p>
+Although both technologies work wirelessly, they were developed for very different purposes.
+Bluetooth is designed for continuous communication over several meters, while NFC focuses on extremely short
+distances in order to provide fast and secure interactions.
+</p>
 
-                <h3>Typische Einsatzbereiche</h3>
-                <div class="columns-2">
-                    <div>
-                        <ul>
-                            <li>Musikübertragung zu <strong>Bluetooth-Kopfhörern</strong> oder Lautsprechern.</li>
-                            <li>Verbindung von <strong>Game-Controllern</strong> mit Konsole oder PC.</li>
-                            <li>Kopplung von <strong>Smartwatches</strong> mit dem Smartphone.</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <ul>
-                            <li>Drahtlose <strong>Maus und Tastatur</strong> am Computer.</li>
-                            <li><strong>Dateiaustausch</strong> zwischen Geräten (z. B. Fotos, Kontakte).</li>
-                            <li><strong>IoT-Geräte</strong> (Smart Home, Sensoren).</li>
-                        </ul>
-                    </div>
-                </div>
+<h3>Why These Technologies Matter</h3>
+<ul>
+<li>They replace physical cables and plastic cards.</li>
+<li>They enable contactless payments and smart device control.</li>
+<li>They are key components of smart homes, wearables and IoT systems.</li>
+</ul>
 
-                <h3>Wie verbinden sich Bluetooth-Geräte? (Pairing)</h3>
-                <ol>
-                    <li>Ein Gerät wird in den <strong>Kopplungsmodus</strong> gesetzt (z. B. Kopfhörer).</li>
-                    <li>Das andere Gerät (z. B. Handy) sucht nach Bluetooth-Geräten.</li>
-                    <li>Der Benutzer wählt das Gerät aus und bestätigt die Verbindung.</li>
-                    <li>Die Geräte tauschen <strong>Schlüssel</strong> aus und können sich später meist automatisch wieder verbinden.</li>
-                </ol>
+<h3>Where We Use Them Every Day</h3>
+<table>
+<tr><th>Technology</th><th>Typical Use</th></tr>
+<tr><td>Bluetooth</td><td>Wireless headphones, keyboards, smartwatches, medical sensors</td></tr>
+<tr><td>NFC</td><td>Contactless payments, public transport tickets, access control</td></tr>
+</table>
 
-                <h3>Vorteile &amp; Nachteile von Bluetooth</h3>
-                <div class="columns-2">
-                    <div>
-                        <h3>Vorteile</h3>
-                        <ul>
-                            <li>Gut für <strong>dauerhafte Verbindungen</strong> (Musikstreaming, Eingabegeräte).</li>
-                            <li><strong>Relativ große Reichweite</strong> im Vergleich zu NFC.</li>
-                            <li>Kann auch <strong>größere Datenmengen</strong> übertragen.</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3>Nachteile</h3>
-                        <ul>
-                            <li>Verbraucht mehr <strong>Strom</strong> als NFC.</li>
-                            <li>Verbindung muss meist <strong>aktiv hergestellt</strong> werden (Pairing).</li>
-                            <li>Kann von anderen Geräten in der Umgebung gestört werden (2,4 GHz).</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <section id="nfc" class="card">
-                <h2>3. NFC – Berühren statt tippen</h2>
-                <div class="badge-row">
-                    <span class="badge nfc">NFC</span>
-                    <span class="badge">bis ca. 4 cm</span>
-                    <span class="badge">schnelle Aktionen</span>
-                </div>
-
-                <h3>Was ist NFC?</h3>
-                <p>
-                    NFC steht für <strong>Near Field Communication</strong>. Es ist eine Technologie für
-                    extrem kurze Distanzen – wenige Zentimeter. Man nutzt sie, indem man Geräte
-                    <strong>aneinander hält oder auflegt</strong>.
-                </p>
-
-                <h3>Technische Eckdaten (einfach erklärt)</h3>
-                <ul>
-                    <li><strong>Frequenz:</strong> 13,56 MHz.</li>
-                    <li><strong>Reichweite:</strong> wenige Zentimeter – absichtlich sehr kurz.</li>
-                    <li><strong>Geschwindigkeit:</strong> relativ gering, reicht aber für kleine Datenmengen.</li>
-                    <li><strong>Betriebsarten:</strong> z. B. <em>Leser/Schreiber</em>, <em>Kartenemulation</em>, <em>Peer-to-Peer</em>.</li>
-                </ul>
-
-                <h3>Typische Einsatzbereiche</h3>
-                <ul>
-                    <li><strong>Kontaktloses Bezahlen</strong> mit Bankkarte oder Smartphone.</li>
-                    <li><strong>Öffentliche Verkehrsmittel</strong>: Tickets durch Auflegen der Karte oder des Handys.</li>
-                    <li><strong>Schlüsselkarten</strong> für Türen (Hotelzimmer, Firmengebäude).</li>
-                    <li><strong>NFC-Tags</strong>: kleine Chips, die Infos speichern (z. B. WLAN-Daten, URLs, Visitenkarten).</li>
-                </ul>
-
-                <h3>Besonderheit: Passives vs. aktives Gerät</h3>
-                <p>
-                    Ein großer Unterschied zu Bluetooth: <strong>NFC-Karten oder Tags brauchen oft keine eigene Batterie.</strong>
-                </p>
-                <ul>
-                    <li><strong>Aktives Gerät:</strong> z. B. Smartphone, Lesegerät – erzeugt das Funkfeld.</li>
-                    <li><strong>Passives Gerät:</strong> NFC-Karte/Tag – nutzt die Energie aus dem Funkfeld, um zu antworten.</li>
-                </ul>
-
-                <h3>Vorteile &amp; Nachteile von NFC</h3>
-                <div class="columns-2">
-                    <div>
-                        <h3>Vorteile</h3>
-                        <ul>
-                            <li>Sehr <strong>schnell und einfach</strong>: Gerät kurz hinhalten, fertig.</li>
-                            <li><strong>Sicherer</strong> durch sehr kurze Reichweite.</li>
-                            <li>Passivkarten brauchen <strong>keine Batterie</strong>.</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3>Nachteile</h3>
-                        <ul>
-                            <li>Nur für <strong>kleine Datenmengen</strong> geeignet.</li>
-                            <li>Funktioniert nur auf <strong>sehr kurze Distanz</strong>.</li>
-                            <li>Nicht geeignet für dauerhaftes Streaming (z. B. Musik).</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <section id="vergleich" class="card">
-                <h2>4. Direkter Vergleich: Bluetooth vs. NFC</h2>
-                <p>
-                    Beide Technologien haben ihren Platz im Alltag. Welche man nutzt, hängt von der
-                    <strong>Situation</strong> ab.
-                </p>
-
-                <div class="table">
-                    <div class="table-header">
-                        <div class="table-cell">Kriterium</div>
-                        <div class="table-cell">Bluetooth</div>
-                        <div class="table-cell">NFC</div>
-                    </div>
-                    <div class="table-row">
-                        <div class="table-cell">Typische Distanz</div>
-                        <div class="table-cell">bis ca. 10–100 m</div>
-                        <div class="table-cell">bis ca. 4 cm</div>
-                    </div>
-                    <div class="table-row">
-                        <div class="table-cell">Hauptaufgabe</div>
-                        <div class="table-cell">Dauerhafte Verbindung, z. B. Musik</div>
-                        <div class="table-cell">Schnelle Aktion, z. B. Bezahlen</div>
-                    </div>
-                    <div class="table-row">
-                        <div class="table-cell">Datenmenge</div>
-                        <div class="table-cell">mittel bis hoch</div>
-                        <div class="table-cell">gering</div>
-                    </div>
-                    <div class="table-row">
-                        <div class="table-cell">Energieverbrauch</div>
-                        <div class="table-cell">höher als NFC</div>
-                        <div class="table-cell">sehr gering</div>
-                    </div>
-                    <div class="table-row">
-                        <div class="table-cell">Typische Beispiele</div>
-                        <div class="table-cell">Kopfhörer, Controller, Smartwatch</div>
-                        <div class="table-cell">Bankkarte, Türkarte, Handypay</div>
-                    </div>
-                </div>
-
-                <h3>Wann benutzt man was?</h3>
-                <div class="pill-list">
-                    <span class="pill">Musik hören → Bluetooth</span>
-                    <span class="pill">Dateien senden (ohne Internet) → Bluetooth</span>
-                    <span class="pill">Kontaktlos bezahlen → NFC</span>
-                    <span class="pill">Tür oder Schranke öffnen → NFC</span>
-                    <span class="pill">Geräte schnell koppeln → NFC + Bluetooth kombiniert</span>
-                </div>
-
-                <p class="tip">
-                    Viele moderne Geräte nutzen <strong>beide</strong>: z. B. Handy + Lautsprecher.
-                    NFC wird benutzt, um per „Tap“ die Verbindung zu starten, Bluetooth übernimmt dann die eigentliche Datenübertragung.
-                </p>
-            </section>
-
-            <section id="sicherheit" class="card">
-                <h2>5. Sicherheit: Wie gefährlich ist das eigentlich?</h2>
-                <div class="badge-row">
-                    <span class="badge security">Sicherheit</span>
-                    <span class="badge">Verschlüsselung</span>
-                    <span class="badge">Reichweite</span>
-                </div>
-
-                <h3>Bluetooth-Sicherheit</h3>
-                <ul>
-                    <li>Moderne Bluetooth-Versionen nutzen <strong>Verschlüsselung</strong>, damit niemand mithören kann.</li>
-                    <li>Wichtig: Geräte sollten nicht dauerhaft im <strong>sichtbar / discoverable</strong>-Modus sein.</li>
-                    <li>Risiko: Wenn man auf unbekannte Geräte oder seltsame Namen klickt, könnte man sich verbinden, ohne es zu wollen.</li>
-                </ul>
-
-                <h3>NFC-Sicherheit</h3>
-                <ul>
-                    <li>Durch die <strong>sehr kurze Reichweite</strong> ist es für Angreifer schwer, heimlich mitzulesen.</li>
-                    <li>Beim Bezahlen muss meist zusätzlich <strong>PIN, Fingerabdruck oder Face-ID</strong> bestätigt werden.</li>
-                    <li>Trotzdem gilt: Karten und Smartphone sorgfältig aufbewahren – wie Bargeld.</li>
-                </ul>
-
-                <h3>Tipps für Schüler:innen</h3>
-                <ul>
-                    <li><strong>Nur bekannte Geräte koppeln</strong> (z. B. eigene Kopfhörer, Lautsprecher in der Schule).</li>
-                    <li><strong>Bluetooth ausschalten</strong>, wenn es nicht benötigt wird – spart Akku und reduziert Angriffsfläche.</li>
-                    <li><strong>Smartphone sperren</strong>, damit niemand damit heimlich bezahlen oder Türen öffnen kann.</li>
-                </ul>
-            </section>
-
-            <section id="zusammenfassung" class="card">
-                <h2>6. Kurze Zusammenfassung für deinen Spickzettel</h2>
-                <ul>
-                    <li><span class="keyword">Bluetooth</span> = unsichtbares Kabel für <strong>dauerhafte Verbindungen</strong> (Musik, Eingabegeräte, Daten).</li>
-                    <li><span class="keyword">NFC</span> = <strong>extrem kurze Distanz</strong> für <strong>schnelle Aktionen</strong> (Bezahlen, Türen, Tickets).</li>
-                    <li>Bluetooth kann mehr Daten über eine größere Entfernung schicken, verbraucht aber mehr Energie.</li>
-                    <li>NFC ist langsamer und sehr kurzreichweitig, dafür bequem und sicher für sensible Anwendungen.</li>
-                    <li>Im Alltag arbeiten beide Technologien oft <strong>zusammen</strong> – z. B. beim schnellen Verbinden von Geräten.</li>
-                </ul>
-                <p class="tip">
-                    Wenn du dir nur einen Satz merken willst:<br>
-                    <strong>Bluetooth ist für längere Verbindungen, NFC für einen kurzen „Touch“-Moment.</strong>
-                </p>
-            </section>
-        </div>
-
-        <!-- Seitenleiste -->
-        <aside class="side-panel">
-            <div class="card">
-                <h3>Mini-Überblick für Präsentationen</h3>
-                <p>Nutze diese Punkte z. B. für ein Referat oder ein Plakat:</p>
-                <ul>
-                    <li>Was ist Bluetooth? → Funktechnik für Verbindungen auf ca. 10 m.</li>
-                    <li>Was ist NFC? → Funktechnik für wenige Zentimeter, z. B. Bezahlen.</li>
-                    <li>Unterschiede: Reichweite, Datenmenge, Einsatzgebiet.</li>
-                    <li>Beispiele: Kopfhörer (Bluetooth), Bankkarte (NFC).</li>
-                    <li>Wichtige Sicherheitsregeln (Bluetooth aus, Handy sperren usw.).</li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h3>Kleine Zeitleiste</h3>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-year">1990er</div>
-                        <div class="timeline-text">Bluetooth wird entwickelt, um Kabel zwischen Geräten zu ersetzen.</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">Anfang 2000er</div>
-                        <div class="timeline-text">Die ersten Handys mit Bluetooth erscheinen.</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">ab ca. 2004</div>
-                        <div class="timeline-text">NFC entsteht und wird in Karten &amp; Tickets eingebaut.</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">ab ca. 2010</div>
-                        <div class="timeline-text">Smartphones kombinieren Bluetooth &amp; NFC – kontaktloses Bezahlen wird normal.</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Checkliste: Hast du alles verstanden?</h3>
-                <ul>
-                    <li>Kannst du in einem Satz erklären, was Bluetooth macht?</li>
-                    <li>Kannst du in einem Satz erklären, was NFC macht?</li>
-                    <li>Kannst du drei Beispiele für Bluetooth und drei für NFC nennen?</li>
-                    <li>Weißt du, welche Technologie du für Musik, welche für Bezahlen brauchst?</li>
-                </ul>
-                <p>Wenn du diese Fragen beantworten kannst, bist du für einen Test oder ein Referat gut vorbereitet.</p>
-            </div>
-        </aside>
-    </main>
-
-    <footer>
-        Diese Seite darf für Schulprojekte, Referate und Unterricht frei verwendet werden.
-    </footer>
+<div class="infobox">
+<strong>Key Idea:</strong><br>
+Bluetooth is used when devices need to stay connected for a longer time,
+NFC is used when a single secure action is enough.
 </div>
+`,
+
+
+
+bluetooth: `
+<h2>Bluetooth Technology – In Depth</h2>
+
+<h3>What is Bluetooth?</h3>
+<p>
+Bluetooth is a short-range wireless communication technology that allows electronic devices to exchange data
+without cables. It was originally developed as a replacement for serial cables and has evolved into one of the
+most important wireless standards in the world.
+</p>
+
+<h3>Main Characteristics</h3>
+<table>
+<tr><th>Feature</th><th>Description</th></tr>
+<tr><td>Frequency Band</td><td>2.4 GHz ISM Band</td></tr>
+<tr><td>Typical Range</td><td>10 – 100 meters</td></tr>
+<tr><td>Data Transmission</td><td>Packet-based communication</td></tr>
+<tr><td>Power Consumption</td><td>Optimized using Bluetooth Low Energy (BLE)</td></tr>
+</table>
+
+<h3>How Bluetooth Works</h3>
+<p>
+Bluetooth uses a technique called <strong>frequency hopping spread spectrum</strong>. This means that the signal
+changes its frequency many times per second. This reduces interference with Wi-Fi networks and other devices
+working in the same frequency band.
+</p>
+
+<h3>Pairing Process</h3>
+<ol>
+<li>One device is put into pairing mode.</li>
+<li>The second device scans for available Bluetooth devices.</li>
+<li>Both devices exchange security keys.</li>
+<li>After successful authentication the devices can communicate securely.</li>
+</ol>
+
+<h3>Typical Bluetooth Applications</h3>
+<ul>
+<li>Wireless headphones and speakers</li>
+<li>Smartwatches and fitness trackers</li>
+<li>Wireless keyboards, mice and game controllers</li>
+<li>Medical sensors and smart home devices</li>
+</ul>
+
+<div class="infobox">
+<strong>Important:</strong> Bluetooth connections should only be established with trusted devices to avoid
+security risks such as unauthorized data access.
+</div>
+`,
+
+
+nfc: `
+<h2>NFC Technology – In Depth</h2>
+
+<h3>What is NFC?</h3>
+<p>
+NFC stands for <strong>Near Field Communication</strong>. It is a wireless technology that allows devices to exchange
+information when they are only a few centimeters apart. This extremely short range is not a limitation, but a
+security feature that prevents unwanted connections.
+</p>
+
+<h3>Main Characteristics</h3>
+<table>
+<tr><th>Feature</th><th>Description</th></tr>
+<tr><td>Operating Frequency</td><td>13.56 MHz</td></tr>
+<tr><td>Typical Range</td><td>Up to 4 centimeters</td></tr>
+<tr><td>Power Usage</td><td>Very low – passive tags possible</td></tr>
+<tr><td>Connection Setup</td><td>Instant by touching devices</td></tr>
+</table>
+
+<h3>NFC Operating Modes</h3>
+<ul>
+<li><strong>Reader / Writer Mode:</strong> Smartphones read or write data on NFC tags.</li>
+<li><strong>Card Emulation Mode:</strong> The smartphone behaves like a credit card for payments.</li>
+<li><strong>Peer-to-Peer Mode:</strong> Two devices exchange small amounts of data.</li>
+</ul>
+
+<h3>How NFC Works</h3>
+<p>
+NFC is based on magnetic field induction. The active device generates an electromagnetic field which powers
+passive NFC tags. This is why many NFC cards do not need batteries.
+</p>
+
+<h3>Typical NFC Applications</h3>
+<ul>
+<li>Contactless payments with smartphones or credit cards</li>
+<li>Public transport tickets</li>
+<li>Hotel room keys and office access cards</li>
+<li>NFC tags for automating smartphone actions</li>
+</ul>
+
+<div class="infobox">
+<strong>Important:</strong> Because NFC works only over a few centimeters, the user always stays in control
+of when a connection is established.
+</div>
+`,
+
+
+security: `
+<h2>Security and Risks</h2>
+
+<h3>Why Wireless Security is Important</h3>
+<p>
+Wireless technologies transmit data through the air. This means that information can theoretically be intercepted
+by unauthorized persons. Therefore, Bluetooth and NFC include several security mechanisms to protect users.
+</p>
+
+<h3>Bluetooth Security Mechanisms</h3>
+<ul>
+<li><strong>Pairing:</strong> Devices exchange secret keys before communication starts.</li>
+<li><strong>Authentication:</strong> Only trusted devices are allowed to connect.</li>
+<li><strong>Encryption:</strong> Transmitted data is encrypted to prevent eavesdropping.</li>
+</ul>
+
+<h3>Typical Bluetooth Attacks</h3>
+<table>
+<tr><th>Attack</th><th>Description</th></tr>
+<tr><td>Bluejacking</td><td>Sending unwanted messages to nearby Bluetooth devices.</td></tr>
+<tr><td>Bluesnarfing</td><td>Stealing data from poorly protected devices.</td></tr>
+<tr><td>Man-in-the-Middle</td><td>Attacker intercepts the communication.</td></tr>
+</table>
+
+<h3>NFC Security Mechanisms</h3>
+<ul>
+<li>Extremely short operating range.</li>
+<li>Secure elements inside smartphones and payment cards.</li>
+<li>User confirmation for sensitive actions.</li>
+</ul>
+
+<h3>Typical NFC Attacks</h3>
+<table>
+<tr><th>Attack</th><th>Description</th></tr>
+<tr><td>Relay Attack</td><td>Extending the NFC signal to trick systems.</td></tr>
+<tr><td>Skimming</td><td>Reading NFC cards without permission.</td></tr>
+</table>
+
+<div class="infobox">
+<strong>Security Tips:</strong><br>
+• Disable Bluetooth when not needed.<br>
+• Only pair with trusted devices.<br>
+• Keep your smartphone locked and updated.
+</div>
+`,
+
+comparison: `
+<h2>Bluetooth vs NFC – Detailed Comparison</h2>
+
+<h3>Purpose and Typical Use</h3>
+<p>
+Bluetooth was created to replace cables and enable continuous wireless communication between devices.
+It is ideal for audio streaming, data transfer and connecting peripherals.
+NFC was designed for secure and instant interactions over extremely short distances, mainly for payments,
+ticketing and access control.
+</p>
+
+<table>
+<tr><th>Bluetooth</th><th>NFC</th></tr>
+<tr><td>Replaces cables</td><td>Replaces cards and tickets</td></tr>
+<tr><td>Music, keyboards, IoT devices</td><td>Payments, door access, transport tickets</td></tr>
+<tr><td>Connection stays active</td><td>Action is finished in seconds</td></tr>
+</table>
+
+<h3>Range and Frequency</h3>
+<ul>
+<li>Bluetooth works up to several meters and uses frequency hopping to avoid interference.</li>
+<li>NFC works only a few centimeters and uses a fixed frequency of 13.56 MHz.</li>
+</ul>
+
+<h3>Energy Consumption</h3>
+<p>
+Bluetooth Low Energy (BLE) allows devices to run for months on small batteries.
+NFC tags often do not need batteries at all, because they are powered by the reader device.
+</p>
+
+<h3>Practical Example</h3>
+<p>
+When you touch your phone to a payment terminal, NFC performs the authentication.
+After that, Bluetooth may be used to transfer larger data between devices.
+This shows that both technologies are often used together.
+</p>
+`
+
+};
+
+function show(name){
+    document.getElementById("content").innerHTML = data[name];
+    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+    event.target.classList.add("active");
+}
+function checkAnswer(ans, correct=false){
+    const res=document.getElementById("quizResult");
+    if(correct){
+        res.innerHTML="Correct! NFC is used for contactless payments.";
+        res.className="correct";
+    }else{
+        res.innerHTML="Wrong! Try again.";
+        res.className="wrong";
+    }
+}
+
+
+show("intro");
+</script>
 </body>
 </html>
