@@ -28,6 +28,8 @@ nav button.active{
 .quiz button{
     margin-top:10px;
 }
+.correct{color:#4ade80;font-weight:bold;}
+.wrong{color:#f87171;font-weight:bold;}
 
 
 
