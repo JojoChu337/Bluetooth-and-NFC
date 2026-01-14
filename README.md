@@ -29,11 +29,11 @@ Keine tiefe Sicherheitsanalyse; nur grundlegende Hinweise.
 Projektinhalte:
 
 Statische HTML-Seiten (Startseite, Bluetooth, NFC, Vergleich, Quellen).
-Grafische Elemente: Platzhalter für Bilder/Icons (Tunahan fügt finale Grafiken ein).
-Inhaltliche Texte und Erklärungen (Joey recherchiert und schreibt die Texte).
+Grafische Elemente: Platzhalter für Bilder/Icons .
+Inhaltliche Texte und Erklärungen .
 Vergleichstabelle mit den wichtigsten Kennwerten.
 Navigation und responsive Basisgestaltung (ohne Frameworks).
-Nutzbare Elemente für die Präsentation (Slides, Screenshots oder Live-Demo des HTML-Layouts).
+
 
 
 Kritische Erfolgsfaktoren:
