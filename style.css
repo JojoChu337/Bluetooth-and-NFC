@@ -25,6 +25,9 @@ nav button.active{
     padding:15px;
     border-radius:10px;
 }
+.quiz button{
+    margin-top:10px;
+}
 
 
 
