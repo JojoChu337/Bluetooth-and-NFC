@@ -7,6 +7,11 @@ main{max-width:1000px;margin:20px auto;background:#1e293b;padding:20px;border-ra
 table{width:100%;border-collapse:collapse;margin-top:10px}
 td,th{border:1px solid #475569;padding:6px}
 
+nav button.active{
+    background:#fde68a;
+    color:#020617;
+    font-weight:bold;
+}
 
 
 
