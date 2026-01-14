@@ -19,6 +19,13 @@ nav button.active{
     margin:12px 0;
     border-radius:8px;
 }
+.quiz{
+    margin-top:20px;
+    background:#020617;
+    padding:15px;
+    border-radius:10px;
+}
+
 
 
 
