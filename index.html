@@ -91,6 +91,9 @@
             <button class="nav-pill px-4 py-2" onclick="show('security')"><i class="fas fa-shield-halved me-2"></i>Sicherheit</button>
             <button class="nav-pill px-4 py-2" onclick="show('energy')"><i class="fas fa-battery-full me-2"></i>Energie & IoT</button>
             <button class="nav-pill px-4 py-2" onclick="show('future')"><i class="fas fa-rocket me-2"></i>Zukunft</button>
+            <button class="nav-pill ms-md-3" id="themeToggle" onclick="toggleTheme()">
+                <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
         </div>
     </nav>
 
@@ -222,6 +225,30 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 `
 };
 
+function toggleTheme() {
+    const html = document.documentElement;
+    const icon = document.getElementById('themeIcon');
+
+    if (html.getAttribute('data-bs-theme') === 'light') {
+        html.setAttribute('data-bs-theme', 'dark');
+        icon.classList.replace('fa-moon', 'fa-sun');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        html.setAttribute('data-bs-theme', 'light');
+        icon.classList.replace('fa-sun', 'fa-moon');
+        localStorage.setItem('theme', 'light');
+    }
+}
+
+// Das hier sorgt dafür, dass beim Laden der Seite das richtige Design erscheint
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
+    const icon = document.getElementById('themeIcon');
+    if (savedTheme === 'dark' && icon) {
+        icon.classList.replace('fa-moon', 'fa-sun');
+    }
+});
 function show(name) {
     document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
     event.currentTarget.classList.add('active');
