@@ -225,10 +225,30 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 `
 };
 
+function show(name) {
+    // 1. Inhalt austauschen
+    const contentBox = document.getElementById("content");
+    if (contentBox) {
+        contentBox.innerHTML = data[name];
+    }
+
+      
+    document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
+
+    // Prüfen, ob die Funktion durch einen Klick oder automatisch aufgerufen wurde
+    if (window.event && window.event.currentTarget && window.event.currentTarget.classList.contains('nav-pill')) {
+        window.event.currentTarget.classList.add('active');
+    } else {
+            
+        const activeBtn = document.querySelector(`button[onclick="show('${name}')"]`);
+        if (activeBtn) activeBtn.classList.add('active');
+    }
+}
+
+  
 function toggleTheme() {
     const html = document.documentElement;
     const icon = document.getElementById('themeIcon');
-
     if (html.getAttribute('data-bs-theme') === 'light') {
         html.setAttribute('data-bs-theme', 'dark');
         icon.classList.replace('fa-moon', 'fa-sun');
@@ -240,25 +260,17 @@ function toggleTheme() {
     }
 }
 
-// Das hier sorgt dafür, dass beim Laden der Seite das richtige Design erscheint
+// 3. Beim Laden der Seite ausführen
 document.addEventListener('DOMContentLoaded', () => {
+        
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-bs-theme', savedTheme);
     const icon = document.getElementById('themeIcon');
-    if (savedTheme === 'dark' && icon) {
-        icon.classList.replace('fa-moon', 'fa-sun');
-    }
-});
-function show(name) {
-    document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-    
-    document.getElementById("content").innerHTML = data[name];
-    window.scrollTo({ top: document.querySelector('.sticky-nav').offsetTop - 20, behavior: 'smooth' });
-}
+    if (savedTheme === 'dark' && icon) icon.classList.replace('fa-moon', 'fa-sun');
 
-// Initial laden
-show("intro");
+        
+    show("intro");
+});
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
