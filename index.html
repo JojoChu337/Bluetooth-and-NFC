@@ -1,262 +1,239 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de" data-bs-theme="light">
 <head>
-<meta charset="UTF-8">
-<title>Bluetooth & NFC – Complete Educational Project</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bluetooth & NFC – Kompendium 2026</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0d6efd;
+            --primary-dark: #0b5ed7;
+            --gradient: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+        }
+        body {
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            min-height: 100vh;
+        }
+        [data-bs-theme="dark"] body {
+            background: linear-gradient(to bottom, #0f172a, #1e293b);
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--gradient);
+            padding: 1rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .nav-pill {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 0.4rem 1.2rem;
+            color: white !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .nav-pill:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        .nav-pill.active {
+            background: white;
+            color: var(--primary) !important;
+            font-weight: 700;
+        }
+        .cover-img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .card {
+            border: none;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+        }
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+        }
+    </style>
 </head>
 <body>
-<header>
-<h1>Bluetooth & NFC – Complete Educational Project</h1>
-<p>Interactive learning website about wireless short-range technologies</p>
-</header>
 
-<nav>
-<button onclick="show('intro')">Introduction</button>
-<button onclick="show('bluetooth')">Bluetooth Technology</button>
-<button onclick="show('nfc')">NFC Technology</button>
-<button onclick="show('security')">Security & Risks</button>
-<button onclick="show('comparison')">Comparison & Use Cases</button>
-</nav>
+<div class="container my-4 my-md-5">
 
-<main id="content"></main>
+    <header class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary">Bluetooth & NFC 2026</h1>
+        <p class="lead text-muted">Das moderne Kompendium zu den wichtigsten Kurzstrecken-Technologien</p>
+    </header>
+
+    <!-- Sticky Navigation -->
+    <nav class="sticky-nav rounded-pill mb-5">
+        <div class="d-flex justify-content-center flex-wrap gap-2 gap-md-3">
+            <button class="nav-pill px-4 py-2 active" onclick="show('intro')"><i class="fas fa-home me-2"></i>Einführung</button>
+            <button class="nav-pill px-4 py-2" onclick="show('bluetooth')"><i class="fas fa-bluetooth-b me-2"></i>Bluetooth</button>
+            <button class="nav-pill px-4 py-2" onclick="show('nfc')"><i class="fas fa-nfc-directional me-2"></i>NFC</button>
+            <button class="nav-pill px-4 py-2" onclick="show('vergleich')"><i class="fas fa-balance-scale me-2"></i>Vergleich</button>
+            <button class="nav-pill px-4 py-2" onclick="show('security')"><i class="fas fa-shield-halved me-2"></i>Sicherheit</button>
+            <button class="nav-pill px-4 py-2" onclick="show('energy')"><i class="fas fa-battery-full me-2"></i>Energie & IoT</button>
+            <button class="nav-pill px-4 py-2" onclick="show('future')"><i class="fas fa-rocket me-2"></i>Zukunft</button>
+        </div>
+    </nav>
+
+    <main id="content" class="bg-body p-4 p-md-5 rounded-4 shadow-lg"></main>
+
+    <footer class="text-center py-5 mt-5">
+        <p class="mb-1">Stand: Januar 2026 • Bluetooth 6.0 & NFC Release 15</p>
+        <p class="small">Bildungsmaterial – frei nutzbar für nicht-kommerzielle Zwecke</p>
+    </footer>
+
+</div>
 
 <script>
 const data = {
-intro: `
-<h2>Introduction</h2>
+    intro: `
+<h2 class="mb-4">Einführung – Die Welt der kurzen Reichweiten 2026</h2>
 
-<p>
-Bluetooth and Near Field Communication (NFC) are two of the most important short-range wireless communication
-technologies in modern digital society. They are embedded in almost every smartphone, tablet, laptop and
-smart device and enable a wide variety of everyday activities.
+<img src="https://freerangestock.com/sample/184601/laptop-and-smartphone-connected-with-white-earphones..jpg" class="cover-img mb-4" alt="Verbundene Geräte – Bluetooth & NFC">
+
+<p class="lead">
+Bluetooth und NFC sind 2026 zwei der wichtigsten Kurzstrecken-Technologien – sie ergänzen sich perfekt und sind in fast jedem modernen Gerät verbaut. Bluetooth sorgt für dauerhafte, flexible Verbindungen mit hoher Reichweite (Audio-Streaming, Smart Home, IoT-Sensoren), während NFC ultraschnelle, extrem sichere Interaktionen auf kürzeste Distanz ermöglicht (Bezahlung, digitale Schlüssel, Product Passport, Tap-to-Pair).
 </p>
 
 <p>
-Although both technologies work wirelessly, they were developed for very different purposes.
-Bluetooth is designed for continuous communication over several meters, while NFC focuses on extremely short
-distances in order to provide fast and secure interactions.
+Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortung und öffentliches Audio-Broadcasting (Auracast), NFC Release 15 vervierfacht die nutzbare Reichweite auf bis zu 2 cm und erleichtert Wireless Charging sowie EU-Digital-Product-Passport-Anforderungen.
 </p>
 
-<h3>Why These Technologies Matter</h3>
-<ul>
-<li>They replace physical cables and plastic cards.</li>
-<li>They enable contactless payments and smart device control.</li>
-<li>They are key components of smart homes, wearables and IoT systems.</li>
-</ul>
-
-<h3>Where We Use Them Every Day</h3>
-<table>
-<tr><th>Technology</th><th>Typical Use</th></tr>
-<tr><td>Bluetooth</td><td>Wireless headphones, keyboards, smartwatches, medical sensors</td></tr>
-<tr><td>NFC</td><td>Contactless payments, public transport tickets, access control</td></tr>
-</table>
-
-<div class="infobox">
-<strong>Key Idea:</strong><br>
-Bluetooth is used when devices need to stay connected for a longer time,
-NFC is used when a single secure action is enough.
+<div class="row g-4 mt-4">
+    <div class="col-md-6"><div class="card"><img src="https://freerangestock.com/sample/174276/smartphone-with-headphones-and-smartwatch.jpg" class="card-img-top" alt="Bluetooth Geräte"><div class="card-body"><h5>Bluetooth 6.0</h5><p>LE Audio, Auracast, Channel Sounding für cm-Ortung, ultra-niedrige Latenz, bessere Energieeffizienz</p></div></div></div>
+    <div class="col-md-6"><div class="card"><img src="https://cdn.prod.website-files.com/650777ca9323df393e4fbcaa/653e18496e7429d323e5147f_image-02.png" class="card-img-top" alt="NFC Payment"><div class="card-body"><h5>NFC Release 15</h5><p>Reichweite bis 2 cm, zuverlässigeres Tappen, Digital Product Passport, erweiterte Wireless-Charging-Unterstützung</p></div></div></div>
 </div>
 `,
 
-bluetooth: `
-<h2>Bluetooth Technology – In Depth</h2>
+    bluetooth: `
+<h2>Bluetooth – Stand Januar 2026 (Core Specification 6.0)</h2>
 
-<h3>What is Bluetooth?</h3>
-<p>
-Bluetooth is a short-range wireless communication technology that allows electronic devices to exchange data
-without cables. It was originally developed as a replacement for serial cables and has evolved into one of the
-most important wireless standards in the world.
-</p>
+<img src="https://c1.wallpaperflare.com/preview/638/495/740/earphones-headphones-black-music.jpg" class="cover-img mb-4" alt="Bluetooth Kopfhörer und Geräte">
 
-<h3>Main Characteristics</h3>
-<table>
-<tr><th>Feature</th><th>Description</th></tr>
-<tr><td>Frequency Band</td><td>2.4 GHz ISM Band</td></tr>
-<tr><td>Typical Range</td><td>10 – 100 meters</td></tr>
-<tr><td>Data Transmission</td><td>Packet-based communication</td></tr>
-<tr><td>Power Consumption</td><td>Optimized using Bluetooth Low Energy (BLE)</td></tr>
-</table>
+<p class="lead">Bluetooth 6.0 (veröffentlicht 2024, Massenadoption 2025/26) bringt echte Revolutionen in Ortung, Audio und Energieeffizienz. Channel Sounding und Auracast sind die Stars der neuen Generation.</p>
 
-<h3>How Bluetooth Works</h3>
-<p>
-Bluetooth uses a technique called <strong>frequency hopping spread spectrum</strong>. This means that the signal
-changes its frequency many times per second. This reduces interference with Wi-Fi networks and other devices
-working in the same frequency band.
-</p>
-
-<h3>Pairing Process</h3>
-<ol>
-<li>One device is put into pairing mode.</li>
-<li>The second device scans for available Bluetooth devices.</li>
-<li>Both devices exchange security keys.</li>
-<li>After successful authentication the devices can communicate securely.</li>
-</ol>
-
-<h3>Typical Bluetooth Applications</h3>
-<ul>
-<li>Wireless headphones and speakers</li>
-<li>Smartwatches and fitness trackers</li>
-<li>Wireless keyboards, mice and game controllers</li>
-<li>Medical sensors and smart home devices</li>
+<h3>Neueste Features in Bluetooth 6.0</h3>
+<ul class="list-group list-group-flush">
+    <li class="list-group-item"><strong>Bluetooth Channel Sounding</strong> → sichere, cm-genaue Distanzmessung (Phase-Based Ranging) zwischen Geräten – ideal für Find-My-Netzwerke, digitale Autoschlüssel, Smart Locks. Interoperabel zwischen Marken (z. B. Samsung-Phone findet Apple-AirPods)</li>
+    <li class="list-group-item"><strong>Auracast Broadcast Audio</strong> → öffentliches, einseitiges Audio-Broadcasting (kein Pairing nötig). Beispiele: Flughafen-Ansagen, Bahnhof-Durchsagen, TV in Bars, Gottesdienste, Mehrsprachen-Übersetzung in Konferenzen. 2026 in vielen öffentlichen Orten verfügbar</li>
+    <li class="list-group-item">Verbesserte LE Audio: LC3-Codec + niedrigere Latenz, Multi-Stream (mehrere Geräte gleichzeitig), Hi-Res-Audio-Unterstützung</li>
+    <li class="list-group-item">Decision-Based Advertising Filtering → schnelleres Scannen, weniger Akkuverbrauch bei vielen Werbepaketen</li>
+    <li class="list-group-item">Flexible Frame Spacing → anpassbare Pausen zwischen Paketen → optimierte Latenz oder höherer Datendurchsatz</li>
+    <li class="list-group-item">SNR Control & verbesserte Sicherheit gegen physische Angriffe</li>
+    <li class="list-group-item">Noch bessere Energieeffizienz für IoT → Monate bis Jahre Laufzeit bei Sensoren</li>
 </ul>
 
-<div class="infobox">
-<strong>Important:</strong> Bluetooth connections should only be established with trusted devices to avoid
-security risks such as unauthorized data access.
-</div>
+<p>2026: Viele neue Chipsets (Nordic nRF54, Goodix, Qualcomm, Texas Instruments) unterstützen Bluetooth 6.0 nativ. Erste smarte Schlösser, Tracker und True-Wireless-Kopfhörer mit Channel Sounding kommen auf den Markt.</p>
 `,
 
-nfc: `
-<h2>NFC Technology – In Depth</h2>
+    nfc: `
+<h2>NFC – Release 15 (2025/2026)</h2>
 
-<h3>What is NFC?</h3>
-<p>
-NFC stands for <strong>Near Field Communication</strong>. It is a wireless technology that allows devices to exchange
-information when they are only a few centimeters apart. This extremely short range is not a limitation, but a
-security feature that prevents unwanted connections.
-</p>
+<img src="https://cdn.prod.website-files.com/650777ca9323df393e4fbcaa/68de870190e3aa647df34d2e_f6105145.png" class="cover-img mb-4" alt="Kontaktloses Bezahlen mit NFC">
 
-<h3>Main Characteristics</h3>
-<table>
-<tr><th>Feature</th><th>Description</th></tr>
-<tr><td>Operating Frequency</td><td>13.56 MHz</td></tr>
-<tr><td>Typical Range</td><td>Up to 4 centimeters</td></tr>
-<tr><td>Power Usage</td><td>Very low – passive tags possible</td></tr>
-<tr><td>Connection Setup</td><td>Instant by touching devices</td></tr>
-</table>
+<p class="lead">NFC Release 15 (veröffentlicht 2025, Zertifizierung ab Herbst 2025, erste Geräte ab Anfang 2026) vervierfacht die offizielle Reichweite von ~0,5 cm auf bis zu 2 cm – das macht Tappen im Alltag deutlich zuverlässiger und benutzerfreundlicher.</p>
 
-<h3>NFC Operating Modes</h3>
-<ul>
-<li><strong>Reader / Writer Mode:</strong> Smartphones read or write data on NFC tags.</li>
-<li><strong>Card Emulation Mode:</strong> The smartphone behaves like a credit card for payments.</li>
-<li><strong>Peer-to-Peer Mode:</strong> Two devices exchange small amounts of data.</li>
+<ul class="list-group list-group-flush">
+    <li class="list-group-item"><strong>Erweiterte Reichweite (bis 2 cm)</strong> → weniger präzises Ausrichten nötig, schnellerer Verbindungsaufbau, deutlich weniger Fehlversuche beim Bezahlen oder Türöffnen</li>
+    <li class="list-group-item">Kontaktloses Bezahlen & Zugangskontrolle (noch stabiler und schneller)</li>
+    <li class="list-group-item">Wireless Charging für Wearables & kleine Geräte (z. B. smarte Ringe, Ohrhörer-Cases, Fitness-Tracker)</li>
+    <li class="list-group-item"><strong>Digital Product Passport (EU)</strong> → NFC-Tags in Produkten speichern Lebenszyklus-Daten (Reparatur, Recycling, Herkunft, CO₂-Fußabdruck) – Pflicht ab 2026/27 für viele Warengruppen</li>
+    <li class="list-group-item">Verbesserte Unterstützung für passive Tags & erweiterte NDEF-Records</li>
+    <li class="list-group-item">Sicherheit bleibt top: physikalische Nähe + Secure Element + starke Verschlüsselung</li>
 </ul>
 
-<h3>How NFC Works</h3>
-<p>
-NFC is based on magnetic field induction. The active device generates an electromagnetic field which powers
-passive NFC tags. This is why many NFC cards do not need batteries.
-</p>
-
-<h3>Typical NFC Applications</h3>
-<ul>
-<li>Contactless payments with smartphones or credit cards</li>
-<li>Public transport tickets</li>
-<li>Hotel room keys and office access cards</li>
-<li>NFC tags for automating smartphone actions</li>
-</ul>
-
-<div class="infobox">
-<strong>Important:</strong> Because NFC works only over a few centimeters, the user always stays in control
-of when a connection is established.
-</div>
+<p>Erste Geräte mit Release 15 erscheinen 2026 – vor allem neue iPhones, Android-Handys (Pixel, Samsung Galaxy) und Wearables profitieren von zuverlässigerem Tappen.</p>
 `,
 
-security: `
-<h2>Security and Risks</h2>
+    vergleich: `
+<h2>Vergleich Bluetooth 6.0 vs. NFC Release 15 – 2026</h2>
 
-<h3>Why Wireless Security is Important</h3>
-<p>
-Wireless technologies transmit data through the air. This means that information can theoretically be intercepted
-by unauthorized persons. Therefore, Bluetooth and NFC include several security mechanisms to protect users.
-</p>
-
-<h3>Bluetooth Security Mechanisms</h3>
-<ul>
-<li><strong>Pairing:</strong> Devices exchange secret keys before communication starts.</li>
-<li><strong>Authentication:</strong> Only trusted devices are allowed to connect.</li>
-<li><strong>Encryption:</strong> Transmitted data is encrypted to prevent eavesdropping.</li>
-</ul>
-
-<h3>Typical Bluetooth Attacks</h3>
-<table>
-<tr><th>Attack</th><th>Description</th></tr>
-<tr><td>Bluejacking</td><td>Sending unwanted messages to nearby Bluetooth devices.</td></tr>
-<tr><td>Bluesnarfing</td><td>Stealing data from poorly protected devices.</td></tr>
-<tr><td>Man-in-the-Middle</td><td>Attacker intercepts the communication.</td></tr>
+<table class="table table-striped table-hover table-bordered">
+    <thead class="table-dark"><tr><th>Merkmal</th><th>Bluetooth 6.0</th><th>NFC Release 15</th></tr></thead>
+    <tbody>
+        <tr><td>Reichweite</td><td>1–100+ m (klassisch) / cm-Ortung mit Channel Sounding</td><td>bis ~2 cm (4× mehr als vorher)</td></tr>
+        <tr><td>Datenrate</td><td>bis ~50 Mbit/s (LE Audio & High Data Throughput)</td><td>bis ~424 kbit/s</td></tr>
+        <tr><td>Verbindungsaufbau</td><td>Pairing / Bonding (kann Sekunden dauern)</td><td>sofort (Tap)</td></tr>
+        <tr><td>Energieverbrauch</td><td>sehr niedrig (BLE) – Monate/Jahre bei Sensoren</td><td>extrem niedrig, passive Tags ohne Batterie</td></tr>
+        <tr><td>Sicherheit</td><td>LE Secure Connections, Encrypted Advertising, Channel Sounding gegen Relay-Attacken</td><td>physikalische Nähe + Secure Element → höchste Sicherheit bei Zahlung/Schlüssel</td></tr>
+        <tr><td>Haupteinsatz 2026</td><td>Audio (Auracast), IoT, cm-Ortung, Smart Home, Find My</td><td>Bezahlung, digitale Schlüssel, Product Passport, Tap-to-Charge</td></tr>
+    </tbody>
 </table>
-
-<h3>NFC Security Mechanisms</h3>
-<ul>
-<li>Extremely short operating range.</li>
-<li>Secure elements inside smartphones and payment cards.</li>
-<li>User confirmation for sensitive actions.</li>
-</ul>
-
-<h3>Typical NFC Attacks</h3>
-<table>
-<tr><th>Attack</th><th>Description</th></tr>
-<tr><td>Relay Attack</td><td>Extending the NFC signal to trick systems.</td></tr>
-<tr><td>Skimming</td><td>Reading NFC cards without permission.</td></tr>
-</table>
-
-<div class="infobox">
-<strong>Security Tips:</strong><br>
-• Disable Bluetooth when not needed.<br>
-• Only pair with trusted devices.<br>
-• Keep your smartphone locked and updated.
-</div>
 `,
 
-comparison: `
-<h2>Bluetooth vs NFC – Detailed Comparison</h2>
+    security: `
+<h2>Sicherheit – Bluetooth 6.0 vs. NFC Release 15</h2>
 
-<h3>Purpose and Typical Use</h3>
-<p>
-Bluetooth was created to replace cables and enable continuous wireless communication between devices.
-It is ideal for audio streaming, data transfer and connecting peripherals.
-NFC was designed for secure and instant interactions over extremely short distances, mainly for payments,
-ticketing and access control.
-</p>
+<img src="https://s3.mordorintelligence.com/global-access-control-market-industry/global-access-control-market-industry_1680147603958_Access_Control_Market.webp" class="cover-img mb-4" alt="Sicherheit & Schutz bei Bluetooth und NFC">
 
-<table>
-<tr><th>Bluetooth</th><th>NFC</th></tr>
-<tr><td>Replaces cables</td><td>Replaces cards and tickets</td></tr>
-<tr><td>Music, keyboards, IoT devices</td><td>Payments, door access, transport tickets</td></tr>
-<tr><td>Connection stays active</td><td>Action is finished in seconds</td></tr>
-</table>
+<p class="lead">Beide Technologien sind 2026 extrem sicher – aber auf unterschiedliche Weise und für unterschiedliche Anwendungsfälle optimiert.</p>
 
-<h3>Range and Frequency</h3>
-<ul>
-<li>Bluetooth works up to several meters and uses frequency hopping to avoid interference.</li>
-<li>NFC works only a few centimeters and uses a fixed frequency of 13.56 MHz.</li>
+<ul class="list-group">
+    <li class="list-group-item list-group-item-success"><strong>Bluetooth 6.0:</strong> LE Secure Connections, Encrypted Advertising Data, verbesserte Schutz gegen Man-in-the-Middle & Relay-Attacken durch Channel Sounding (physische Distanzprüfung). Sehr sicher für dauerhafte Verbindungen</li>
+    <li class="list-group-item list-group-item-success"><strong>NFC Release 15:</strong> physikalische Nähe (max. 2 cm) verhindert Abhören, Secure Element (Hardware-Chip) für Zahlungen & Schlüssel, starke Verschlüsselung (AES-256). Goldstandard für sensible Transaktionen</li>
+    <li class="list-group-item list-group-item-warning">Tipp: Bluetooth für längere Reichweite → immer Pairing + aktuelle Firmware nutzen. NFC bleibt für Bezahlen, Tür öffnen, Autoschlüssel die sicherste und schnellste Wahl.</li>
+</ul>
+`,
+
+    energy: `
+<h2>Energie & IoT</h2>
+
+<div class="row g-4">
+    <div class="col-md-6"><div class="card"><img src="https://freerangestock.com/sample/102171/headphones-resting-on-speaker.jpg" class="card-img-top" alt="Bluetooth Low Energy"><div class="card-body"><h5>Bluetooth Low Energy</h5><p>Monate bis Jahre Laufzeit bei Sensoren, Uhren, Trackern und Smart-Home-Geräten. Bluetooth 6.0 verbessert die Effizienz nochmals deutlich.</p></div></div></div>
+    <div class="col-md-6"><div class="card"><img src="https://cdn.prod.website-files.com/650777ca9323df393e4fbcaa/653e225a4d9800b8d4102454_post4-img-01.png" class="card-img-top" alt="Passive NFC"><div class="card-body"><h5>Passive NFC-Tags</h5><p>Keine eigene Batterie nötig – Energie wird vom Lesegerät (Handy) übertragen. Ideal für Produkt-Tags, Recycling-Informationen, digitale Visitenkarten.</p></div></div></div>
+</div>
+
+<p class="mt-4">Kombination beider Technologien in IoT: NFC zum schnellen Pairing + Bluetooth für dauerhafte, energieeffiziente Kommunikation.</p>
+`,
+
+    future: `
+<h2>Zukunft 2026–2030</h2>
+
+<img src="https://s3.mordorintelligence.com/smart-home-security-market/smart-home-security-market-1760120883411-major-players.webp" class="cover-img mb-4" alt="Zukunft Smart Home mit Bluetooth & NFC">
+
+<ul class="list-group">
+    <li class="list-group-item">Auracast in Bahnhöfen, Flughäfen, Museen, Fitnessstudios, Gottesdiensten – öffentliches Audio für alle</li>
+    <li class="list-group-item">Universelle digitale Schlüssel (Auto, Haus, Büro, Fahrrad, Hotelzimmer) – Channel Sounding macht Relay-Attacken fast unmöglich</li>
+    <li class="list-group-item">Massive IoT-Netzwerke in Smart Cities: Bluetooth Mesh + NFC-Tags für Recycling, Parken, ÖPNV-Tickets</li>
+    <li class="list-group-item">Tap-to-Charge: NFC-basiertes kabelloses Laden für Wearables ohne präzises Ausrichten</li>
+    <li class="list-group-item">Digital Product Passport wird Standard – jedes Kleidungsstück, Elektrogerät, Möbelstück hat NFC-Tag mit Lebenszyklus-Info</li>
 </ul>
 
-<h3>Energy Consumption</h3>
-<p>
-Bluetooth Low Energy (BLE) allows devices to run for months on small batteries.
-NFC tags often do not need batteries at all, because they are powered by the reader device.
-</p>
-
-<h3>Practical Example</h3>
-<p>
-When you touch your phone to a payment terminal, NFC performs the authentication.
-After that, Bluetooth may be used to transfer larger data between devices.
-This shows that both technologies are often used together.
-</p>
+<p class="mt-4 lead">Bluetooth und NFC werden bis 2030 noch enger zusammenarbeiten – NFC als Einstieg, Bluetooth als Dauerlösung.</p>
 `
-
 };
-function show(name){
+
+function show(name) {
+    document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    
     document.getElementById("content").innerHTML = data[name];
-    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-    event.target.classList.add("active");
-
-}
-function checkAnswer(ans, correct=false){
-    const res=document.getElementById("quizResult");
-    if(correct){
-        res.innerHTML="Correct! NFC is used for contactless payments.";
-        res.className="correct";
-    }else{
-        res.innerHTML="Wrong! Try again.";
-        res.className="wrong";
-    }
+    window.scrollTo({ top: document.querySelector('.sticky-nav').offsetTop - 20, behavior: 'smooth' });
 }
 
-
+// Initial laden
 show("intro");
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
