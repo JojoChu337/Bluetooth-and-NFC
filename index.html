@@ -257,144 +257,96 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 <h2 class="mb-4">Interaktiver Reichweiten-Test</h2>
 <p class="lead">Ziehe das Smartphone zu den Geräten, um die Verbindung zu testen.</p>
 
-<div id="sandbox" style="position: relative; height: 400px; background: #f0f2f5; border-radius: 20px; border: 2px dashed #ccc; overflow: hidden; touch-action: none;">
-    
-    <div id="nfc-target" style="position: absolute; left: 20px; top: 150px; text-align: center; width: 120px;">
+<div id="sandbox" style="position: relative; height: 400px; background: rgba(0,0,0,0.05); border-radius: 20px; border: 2px dashed #ccc; overflow: hidden; touch-action: none;">
+    <div id="nfc-target" style="position: absolute; left: 40px; top: 120px; text-align: center; width: 100px;">
         <i class="fas fa-credit-card" style="font-size: 50px; color: #0d6efd;"></i>
-        <div style="font-size: 12px; font-weight: bold; margin-top: 5px;">NFC Terminal<br>(Reichweite 2cm)</div>
         <div id="nfc-status" class="badge bg-secondary mt-2">Getrennt</div>
     </div>
-
-    <div id="bt-target" style="position: absolute; right: 50px; top: 150px; text-align: center; width: 120px;">
+    <div id="bt-target" style="position: absolute; right: 60px; top: 120px; text-align: center; width: 100px;">
         <i class="fas fa-volume-up" style="font-size: 50px; color: #6610f2;"></i>
-        <div style="font-size: 12px; font-weight: bold; margin-top: 5px;">BT Lautsprecher<br>(Reichweite 20m+)</div>
         <div id="bt-status" class="badge bg-secondary mt-2">Getrennt</div>
     </div>
-
-    <div id="phone" style="position: absolute; left: 45%; top: 250px; cursor: grab; text-align: center; width: 60px; z-index: 100; transition: transform 0.1s;">
+    <div id="phone" style="position: absolute; left: 45%; top: 250px; cursor: grab; text-align: center; width: 60px; z-index: 100;">
         <i class="fas fa-mobile-alt" style="font-size: 70px; color: #333;"></i>
-        <div style="font-size: 10px; background: rgba(0,0,0,0.7); color: white; border-radius: 5px; padding: 2px; position: absolute; top: 20px; left: 10px; width: 40px;" id="phone-display">---</div>
-    </div>
-
-</div>
-
-<div class="row mt-4 text-center">
-    <div class="col-6 border-end">
-        <h6>NFC (Near Field)</h6>
-        <p class="small">Reagiert nur, wenn das Handy fast direkt auf dem Icon liegt.</p>
-    </div>
-    <div class="col-6">
-        <h6>Bluetooth 6.0</h6>
-        <p class="small">Verbindet sich schon auf große Distanz im grauen Bereich.</p>
+        <div style="font-size: 10px; background: black; color: white; border-radius: 5px; position: absolute; top: 20px; left: 10px; width: 40px;" id="phone-display">---</div>
     </div>
 </div>
 
 <script>
-    // Da der HTML-Inhalt dynamisch geladen wird, initialisieren wir die Logik nach einem kurzen Delay
-    setTimeout(() => {
-        const phone = document.getElementById('phone');
-        const sandbox = document.getElementById('sandbox');
-        const nfcTarget = document.getElementById('nfc-target');
-        const btTarget = document.getElementById('bt-target');
+(function() {
+    const phone = document.getElementById('phone');
+    const sandbox = document.getElementById('sandbox');
+    if(!phone || !sandbox) return;
+
+    let isDragging = false;
+
+    const move = (e) => {
+        if (!isDragging) return;
+        const rect = sandbox.getBoundingClientRect();
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
         
-        let isDragging = false;
+        let x = clientX - rect.left - 30;
+        let y = clientY - rect.top - 35;
+        
+        phone.style.left = Math.max(0, Math.min(x, rect.width - 60)) + 'px';
+        phone.style.top = Math.max(0, Math.min(y, rect.height - 80)) + 'px';
 
-        const startDrag = (e) => { isDragging = true; phone.style.cursor = 'grabbing'; };
-        const endDrag = () => { isDragging = false; phone.style.cursor = 'grab'; };
+        const distNFC = Math.sqrt(Math.pow(x - 40, 2) + Math.pow(y - 120, 2));
+        const distBT = Math.sqrt(Math.pow(x - (rect.width - 120), 2) + Math.pow(y - 120, 2));
 
-        const move = (e) => {
-            if (!isDragging) return;
-            
-            const rect = sandbox.getBoundingClientRect();
-            let x = (e.clientX || e.touches[0].clientX) - rect.left - 30;
-            let y = (e.clientY || e.touches[0].clientY) - rect.top - 35;
+        document.getElementById('nfc-status').className = distNFC < 50 ? "badge bg-success" : "badge bg-secondary";
+        document.getElementById('nfc-status').innerText = distNFC < 50 ? "✅ Bezahlt" : "Getrennt";
+        document.getElementById('bt-status').className = distBT < 200 ? "badge bg-primary" : "badge bg-secondary";
+        document.getElementById('bt-status').innerText = distBT < 200 ? "Verbunden" : "Suche...";
+        document.getElementById('phone-display').innerText = distNFC < 50 ? "NFC" : (distBT < 200 ? "BT" : "---");
+    };
 
-            // Grenzen einhalten
-            x = Math.max(0, Math.min(x, rect.width - 60));
-            y = Math.max(0, Math.min(y, rect.height - 80));
-
-            phone.style.left = x + 'px';
-            phone.style.top = y + 'px';
-
-            checkCollision(x + 30, y + 35);
-        };
-
-        const checkCollision = (px, py) => {
-            const nfcRect = {x: 20 + 60, y: 150 + 25};
-            const btRect = {x: sandbox.offsetWidth - 110, y: 150 + 25};
-
-            // Distanzberechnung
-            const distNFC = Math.sqrt(Math.pow(px - nfcRect.x, 2) + Math.pow(py - nfcRect.y, 2));
-            const distBT = Math.sqrt(Math.pow(px - btRect.x, 2) + Math.pow(py - btRect.y, 2));
-
-            // NFC: Sehr kurze Distanz (unter 40px im Simulator)
-            if(distNFC < 45) {
-                document.getElementById('nfc-status').className = "badge bg-success";
-                document.getElementById('nfc-status').innerText = "✅ Bezahlt!";
-                document.getElementById('phone-display').innerText = "NFC OK";
-            } else {
-                document.getElementById('nfc-status').className = "badge bg-secondary";
-                document.getElementById('nfc-status').innerText = "Getrennt";
-            }
-
-            // Bluetooth: Große Distanz (unter 250px im Simulator)
-            if(distBT < 250) {
-                document.getElementById('bt-status').className = "badge bg-primary";
-                document.getElementById('bt-status').innerText = "Connected";
-                const signal = Math.round(-40 - (distBT/5));
-                document.getElementById('phone-display').innerText = signal + "dBm";
-            } else {
-                document.getElementById('bt-status').className = "badge bg-secondary";
-                document.getElementById('bt-status').innerText = "Suche...";
-                if(distNFC >= 45) document.getElementById('phone-display').innerText = "---";
-            }
-        };
-
-        phone.addEventListener('mousedown', startDrag);
-        window.addEventListener('mouseup', endDrag);
-        window.addEventListener('mousemove', move);
-        phone.addEventListener('touchstart', startDrag);
-        window.addEventListener('touchend', endDrag);
-        window.addEventListener('touchmove', move);
-    }, 100);
-
-`
+    phone.onmousedown = phone.ontouchstart = (e) => { isDragging = true; e.preventDefault(); };
+    window.onmouseup = window.ontouchend = () => isDragging = false;
+    window.onmousemove = window.ontouchmove = move;
+})();
+<\/script>
+` 
 };
 
 function show(name) {
-    // 1. Inhalt austauschen
     const contentBox = document.getElementById("content");
-    if (contentBox) {
-        contentBox.innerHTML = data[name];
-    }
+    if (!contentBox) return;
 
-      
+    // 1. Inhalt einfügen
+    contentBox.innerHTML = data[name];
+
+    // 2. Skripte im neuen Inhalt "aufwecken" (WICHTIG!)
+    const scripts = contentBox.querySelectorAll("script");
+    scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        newScript.text = oldScript.text;
+        document.body.appendChild(newScript).parentNode.removeChild(newScript);
+    });
+
+    // 3. Aktiven Button markieren
     document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
-
-    // Prüfen, ob die Funktion durch einen Klick oder automatisch aufgerufen wurde
-    if (window.event && window.event.currentTarget && window.event.currentTarget.classList.contains('nav-pill')) {
-        window.event.currentTarget.classList.add('active');
-    } else {
-            
-        const activeBtn = document.querySelector(`button[onclick="show('${name}')"]`);
-        if (activeBtn) activeBtn.classList.add('active');
-    }
+    const activeBtn = document.querySelector(`button[onclick="show('${name}')"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+}
 }
 
-  
 function toggleTheme() {
     const html = document.documentElement;
     const icon = document.getElementById('themeIcon');
-    if (html.getAttribute('data-bs-theme') === 'light') {
-        html.setAttribute('data-bs-theme', 'dark');
-        icon.classList.replace('fa-moon', 'fa-sun');
-        localStorage.setItem('theme', 'dark');
-    } else {
-        html.setAttribute('data-bs-theme', 'light');
-        icon.classList.replace('fa-sun', 'fa-moon');
-        localStorage.setItem('theme', 'light');
-    }
+    const isDark = html.getAttribute('data-bs-theme') === 'dark';
+    html.setAttribute('data-bs-theme', isDark ? 'light' : 'dark');
+    icon.classList.toggle('fa-moon');
+    icon.classList.toggle('fa-sun');
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
+    show("intro");
+});
 
 // 3. Beim Laden der Seite ausführen
 document.addEventListener('DOMContentLoaded', () => {
@@ -412,6 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
 
 
