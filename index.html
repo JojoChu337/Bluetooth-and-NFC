@@ -253,71 +253,114 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 
 <p class="mt-4 lead">Bluetooth und NFC werden bis 2030 noch enger zusammenarbeiten - NFC als Einstieg, Bluetooth als Dauerlösung.</p>
 `,
-    signaltool: `
-<h2>Signalstärken-Simulator (RSSI)</h2>
-<p class="lead">Simuliere die Signalstärke (RSSI) basierend auf der Entfernung für Bluetooth 6.0 und NFC Release 15.</p>
+   signaltool: `
+<h2 class="mb-4">Interaktiver Reichweiten-Test</h2>
+<p class="lead">Ziehe das Smartphone zu den Geräten, um die Verbindung zu testen.</p>
 
-<div class="card p-4 bg-light">
-    <div class="row align-items-center">
-        <div class="col-md-6">
-            <label for="distanceRange" class="form-label fw-bold">Entfernung zum Sender: <span id="distVal">1.0</span> Meter</label>
-            <input type="range" class="form-range" id="distanceRange" min="0.01" max="50" step="0.1" value="1.0" oninput="updateSignal()">
-        </div>
-        <div class="col-md-6 text-center">
-            <div id="signalDisplay" class="p-3 rounded shadow-sm bg-white">
-                <h4 id="techLabel">Bluetooth 6.0</h4>
-                <div class="display-3 fw-bold" id="rssiVal">-60 dBm</div>
-                <div class="progress mt-2" style="height: 10px;">
-                    <div id="signalBar" class="progress-bar bg-success" role="progressbar" style="width: 80%"></div>
-                </div>
-                <p class="mt-2 text-muted" id="signalStatus">Exzellente Verbindung</p>
-            </div>
-        </div>
+<div id="sandbox" style="position: relative; height: 400px; background: #f0f2f5; border-radius: 20px; border: 2px dashed #ccc; overflow: hidden; touch-action: none;">
+    
+    <div id="nfc-target" style="position: absolute; left: 20px; top: 150px; text-align: center; width: 120px;">
+        <i class="fas fa-credit-card" style="font-size: 50px; color: #0d6efd;"></i>
+        <div style="font-size: 12px; font-weight: bold; margin-top: 5px;">NFC Terminal<br>(Reichweite 2cm)</div>
+        <div id="nfc-status" class="badge bg-secondary mt-2">Getrennt</div>
+    </div>
+
+    <div id="bt-target" style="position: absolute; right: 50px; top: 150px; text-align: center; width: 120px;">
+        <i class="fas fa-volume-up" style="font-size: 50px; color: #6610f2;"></i>
+        <div style="font-size: 12px; font-weight: bold; margin-top: 5px;">BT Lautsprecher<br>(Reichweite 20m+)</div>
+        <div id="bt-status" class="badge bg-secondary mt-2">Getrennt</div>
+    </div>
+
+    <div id="phone" style="position: absolute; left: 45%; top: 250px; cursor: grab; text-align: center; width: 60px; z-index: 100; transition: transform 0.1s;">
+        <i class="fas fa-mobile-alt" style="font-size: 70px; color: #333;"></i>
+        <div style="font-size: 10px; background: rgba(0,0,0,0.7); color: white; border-radius: 5px; padding: 2px; position: absolute; top: 20px; left: 10px; width: 40px;" id="phone-display">---</div>
+    </div>
+
+</div>
+
+<div class="row mt-4 text-center">
+    <div class="col-6 border-end">
+        <h6>NFC (Near Field)</h6>
+        <p class="small">Reagiert nur, wenn das Handy fast direkt auf dem Icon liegt.</p>
+    </div>
+    <div class="col-6">
+        <h6>Bluetooth 6.0</h6>
+        <p class="small">Verbindet sich schon auf große Distanz im grauen Bereich.</p>
     </div>
 </div>
 
-<div class="mt-4">
-    <h5>Was ist RSSI?</h5>
-    <p>Der <strong>Received Signal Strength Indicator</strong> gibt an, wie stark ein Funksignal beim Empfänger ankommt. 
-    Je näher der Wert an 0 liegt, desto stärker ist das Signal (z. B. -40 dBm ist sehr stark, -90 dBm ist sehr schwach).</p>
-    <ul>
-        <li><strong>NFC:</strong> Funktioniert nur bis ca. 0.02m (2 cm) zuverlässig. Danach bricht das Signal sofort ab.</li>
-        <li><strong>Bluetooth:</strong> Nutzt Channel Sounding für cm-genaue Ortung, funktioniert aber über viele Meter hinweg.</li>
-    </ul>
-</div>
+<script>
+    // Da der HTML-Inhalt dynamisch geladen wird, initialisieren wir die Logik nach einem kurzen Delay
+    setTimeout(() => {
+        const phone = document.getElementById('phone');
+        const sandbox = document.getElementById('sandbox');
+        const nfcTarget = document.getElementById('nfc-target');
+        const btTarget = document.getElementById('bt-target');
+        
+        let isDragging = false;
+
+        const startDrag = (e) => { isDragging = true; phone.style.cursor = 'grabbing'; };
+        const endDrag = () => { isDragging = false; phone.style.cursor = 'grab'; };
+
+        const move = (e) => {
+            if (!isDragging) return;
+            
+            const rect = sandbox.getBoundingClientRect();
+            let x = (e.clientX || e.touches[0].clientX) - rect.left - 30;
+            let y = (e.clientY || e.touches[0].clientY) - rect.top - 35;
+
+            // Grenzen einhalten
+            x = Math.max(0, Math.min(x, rect.width - 60));
+            y = Math.max(0, Math.min(y, rect.height - 80));
+
+            phone.style.left = x + 'px';
+            phone.style.top = y + 'px';
+
+            checkCollision(x + 30, y + 35);
+        };
+
+        const checkCollision = (px, py) => {
+            const nfcRect = {x: 20 + 60, y: 150 + 25};
+            const btRect = {x: sandbox.offsetWidth - 110, y: 150 + 25};
+
+            // Distanzberechnung
+            const distNFC = Math.sqrt(Math.pow(px - nfcRect.x, 2) + Math.pow(py - nfcRect.y, 2));
+            const distBT = Math.sqrt(Math.pow(px - btRect.x, 2) + Math.pow(py - btRect.y, 2));
+
+            // NFC: Sehr kurze Distanz (unter 40px im Simulator)
+            if(distNFC < 45) {
+                document.getElementById('nfc-status').className = "badge bg-success";
+                document.getElementById('nfc-status').innerText = "✅ Bezahlt!";
+                document.getElementById('phone-display').innerText = "NFC OK";
+            } else {
+                document.getElementById('nfc-status').className = "badge bg-secondary";
+                document.getElementById('nfc-status').innerText = "Getrennt";
+            }
+
+            // Bluetooth: Große Distanz (unter 250px im Simulator)
+            if(distBT < 250) {
+                document.getElementById('bt-status').className = "badge bg-primary";
+                document.getElementById('bt-status').innerText = "Connected";
+                const signal = Math.round(-40 - (distBT/5));
+                document.getElementById('phone-display').innerText = signal + "dBm";
+            } else {
+                document.getElementById('bt-status').className = "badge bg-secondary";
+                document.getElementById('bt-status').innerText = "Suche...";
+                if(distNFC >= 45) document.getElementById('phone-display').innerText = "---";
+            }
+        };
+
+        phone.addEventListener('mousedown', startDrag);
+        window.addEventListener('mouseup', endDrag);
+        window.addEventListener('mousemove', move);
+        phone.addEventListener('touchstart', startDrag);
+        window.addEventListener('touchend', endDrag);
+        window.addEventListener('touchmove', move);
+    }, 100);
+</script>
 `
 };
-function updateSignal() {
-    const dist = parseFloat(document.getElementById('distanceRange').value);
-    document.getElementById('distVal').innerText = dist.toFixed(1);
-    
-    let rssi, percent, status, color, tech;
-    
-    if (dist <= 0.02) {
-        // NFC Bereich
-        tech = "NFC Release 15";
-        rssi = Math.round(-10 - (dist * 500));
-        percent = 100 - (dist * 2000);
-        status = "NFC Verbindung aktiv (Tap)";
-        color = "bg-primary";
-    } else {
-        // Bluetooth Bereich
-        tech = "Bluetooth 6.0";
-        // Einfaches Pfadverlustmodell für die Simulation
-        rssi = Math.round(-40 - (20 * Math.log10(dist)));
-        percent = Math.max(0, 100 + rssi);
-        
-        if (rssi > -60) { status = "Exzellent"; color = "bg-success"; }
-        else if (rssi > -80) { status = "Gut"; color = "bg-info"; }
-        else { status = "Schwach / Instabil"; color = "bg-danger"; }
-    }
 
-    document.getElementById('techLabel').innerText = tech;
-    document.getElementById('rssiVal').innerText = rssi + " dBm";
-    document.getElementById('signalBar').style.width = percent + "%";
-    document.getElementById('signalBar').className = "progress-bar " + color;
-    document.getElementById('signalStatus').innerText = status;
-}
 function show(name) {
     // 1. Inhalt austauschen
     const contentBox = document.getElementById("content");
@@ -369,6 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
 
 
