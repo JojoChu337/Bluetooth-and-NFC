@@ -76,69 +76,98 @@
             color: #93c5fd !important;
             transform: translateY(-2px);
         }
+        .theme-fixed-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000; 
+            background: var(--gradient); 
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50%; 
+            width: 50px;
+            height: 50px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .theme-fixed-btn:hover {
+                transform: scale(1.1);
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            }
+
+       
+        [data-bs-theme="dark"] .theme-fixed-btn {
+            border-color: rgba(255,255,255,0.1);
+        }
     </style>
 </head>
 <body>
+    <button class="theme-fixed-btn" id="themeToggle" onclick="toggleTheme()">
+        <i class="fas fa-moon" id="themeIcon"></i>
+    </button>
+    <div class="container my-4 my-md-5">
 
-<div class="container my-4 my-md-5">
+        <header class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-primary">Bluetooth & NFC </h1>
+            <p class="lead text-muted">Das moderne Kompendium zu den wichtigsten Kurzstrecken-Technologien</p>
+        </header>
 
-    <header class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-primary">Bluetooth & NFC </h1>
-        <p class="lead text-muted">Das moderne Kompendium zu den wichtigsten Kurzstrecken-Technologien</p>
-    </header>
+        <!-- Sticky Navigation -->
+        <nav class="sticky-nav rounded-pill mb-5">
 
-    <!-- Sticky Navigation -->
-    <nav class="sticky-nav rounded-pill mb-5">
-        
-        <div class="d-flex justify-content-center flex-wrap gap-2 gap-md-3">
+            <div class="d-flex justify-content-center flex-wrap gap-2 gap-md-3">
 
-            <button class="nav-pill px-4 py-2 active" onclick="show('intro')"><i class="fas fa-home me-2"></i>Einführung</button>
-            <button class="nav-pill px-4 py-2" onclick="show('bluetooth')"><i class="fab fa-bluetooth me-2"></i>Bluetooth</button>
-            <button class="nav-pill px-4 py-2" onclick="show('nfc')"><i class="fas fa-credit-card me-2"></i>NFC</button>
-            <button class="nav-pill px-4 py-2" onclick="show('vergleich')"><i class="fas fa-balance-scale me-2"></i>Vergleich</button>
-            <button class="nav-pill px-4 py-2" onclick="show('security')"><i class="fas fa-shield-halved me-2"></i>Sicherheit</button>
-            <button class="nav-pill px-4 py-2" onclick="show('energy')"><i class="fas fa-battery-full me-2"></i>Energie & IoT</button>
-            <button class="nav-pill px-4 py-2" onclick="show('future')"><i class="fas fa-rocket me-2"></i>Zukunft</button>
-            <button class="nav-pill px-4 py-2" onclick="show('signaltool')"> <i class="fas fa-signal me-2"></i>Signal-Tool</button>
-            <button class="nav-pill ms-md-3" id="themeToggle" onclick="toggleTheme()">
-                <i class="fas fa-moon" id="themeIcon"></i>
-            </button>
-        </div>
-    </nav>
+                <button class="nav-pill px-4 py-2 active" onclick="show('intro')"><i class="fas fa-home me-2"></i>Einführung</button>
+                <button class="nav-pill px-4 py-2" onclick="show('bluetooth')"><i class="fab fa-bluetooth me-2"></i>Bluetooth</button>
+                <button class="nav-pill px-4 py-2" onclick="show('nfc')"><i class="fas fa-credit-card me-2"></i>NFC</button>
+                <button class="nav-pill px-4 py-2" onclick="show('vergleich')"><i class="fas fa-balance-scale me-2"></i>Vergleich</button>
+                <button class="nav-pill px-4 py-2" onclick="show('security')"><i class="fas fa-shield-halved me-2"></i>Sicherheit</button>
+                <button class="nav-pill px-4 py-2" onclick="show('energy')"><i class="fas fa-battery-full me-2"></i>Energie & IoT</button>
+                <button class="nav-pill px-4 py-2" onclick="show('future')"><i class="fas fa-rocket me-2"></i>Zukunft</button>
+                <button class="nav-pill px-4 py-2" onclick="show('signaltool')"> <i class="fas fa-signal me-2"></i>Signal-Tool</button>
 
-    <main id="content" class="bg-body p-4 p-md-5 rounded-4 shadow-lg"></main>
 
-    <footer class="text-center py-5 mt-5">
-        <p class="mb-1">Stand: Januar 2026 • Bluetooth 6.0 & NFC Release 15</p>
-        <p class="small">Bildungsmaterial – frei nutzbar für nicht-kommerzielle Zwecke</p>
-        
-        <div class="mt-4">
-            <h6 style="color: #94a3b8; margin-bottom: 1rem;">Weiterführende Links</h6>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem;">
-                <a href="https://www.bluetooth.com/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">
-                    <i class="fas fa-external-link-alt me-1"></i> Bluetooth SIG
-                </a>
-                <a href="https://nfc-forum.org/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">
-                    <i class="fas fa-external-link-alt me-1"></i> NFC Forum
-                </a>
-                <a href="https://de.wikipedia.org/wiki/Bluetooth" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">
-                    <i class="fas fa-external-link-alt me-1"></i> Wikipedia Bluetooth
-                </a>
-                <a href="https://de.wikipedia.org/wiki/Near_Field_Communication" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">
-                    <i class="fas fa-external-link-alt me-1"></i> Wikipedia NFC
-                </a>
-                <a href="https://www.android.com/intl/de_de/articles/better-together/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">
-                    <i class="fas fa-external-link-alt me-1"></i> Android Better Together
-                </a>
             </div>
-        </div>
-    </footer>
+        </nav>
 
-</div>
+        <main id="content" class="bg-body p-4 p-md-5 rounded-4 shadow-lg"></main>
 
-<script>
-const data = {
-    intro: `
+        <footer class="text-center py-5 mt-5">
+            <p class="mb-1">Stand: Januar 2026 • Bluetooth 6.0 & NFC Release 15</p>
+            <p class="small">Bildungsmaterial – frei nutzbar für nicht-kommerzielle Zwecke</p>
+
+            <div class="mt-4">
+                <h6 style="color: #94a3b8; margin-bottom: 1rem;">Weiterführende Links</h6>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem;">
+                    <a href="https://www.bluetooth.com/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">
+                        <i class="fas fa-external-link-alt me-1"></i> Bluetooth SIG
+                    </a>
+                    <a href="https://nfc-forum.org/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">
+                        <i class="fas fa-external-link-alt me-1"></i> NFC Forum
+                    </a>
+                    <a href="https://de.wikipedia.org/wiki/Bluetooth" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">
+                        <i class="fas fa-external-link-alt me-1"></i> Wikipedia Bluetooth
+                    </a>
+                    <a href="https://de.wikipedia.org/wiki/Near_Field_Communication" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">
+                        <i class="fas fa-external-link-alt me-1"></i> Wikipedia NFC
+                    </a>
+                    <a href="https://www.android.com/intl/de_de/articles/better-together/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">
+                        <i class="fas fa-external-link-alt me-1"></i> Android Better Together
+                    </a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        const data = {
+            intro: `
 <h2 class="mb-4">Einführung - Die Welt der kurzen Reichweiten 2026</h2>
 
 <img src="https://freerangestock.com/sample/184601/laptop-and-smartphone-connected-with-white-earphones..jpg" class="cover-img mb-4" alt="Verbundene Geräte – Bluetooth & NFC">
@@ -152,12 +181,12 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 </p>
 
 <div class="row g-4 mt-4">
-    <div class="col-md-6"><div class="card"><img src="https://freerangestock.com/sample/174276/smartphone-with-headphones-and-smartwatch.jpg" class="card-img-top" alt="Bluetooth Geräte"><div class="card-body"><h5>Bluetooth 6.0</h5><p>LE Audio, Auracast, Channel Sounding für cm-Ortung, ultra-niedrige Latenz, bessere Energieeffizienz</p></div></div></div>
-    <div class="col-md-6"><div class="card"><img src="https://cdn.prod.website-files.com/650777ca9323df393e4fbcaa/653e18496e7429d323e5147f_image-02.png" class="card-img-top" alt="NFC Payment"><div class="card-body"><h5>NFC Release 15</h5><p>Reichweite bis 2 cm, zuverlässigeres Tappen, Digital Product Passport, erweiterte Wireless-Charging-Unterstützung</p></div></div></div>
+        <div class="col-md-6"><div class="card"><img src="https://freerangestock.com/sample/174276/smartphone-with-headphones-and-smartwatch.jpg" class="card-img-top" alt="Bluetooth Geräte"><div class="card-body"><h5>Bluetooth 6.0</h5><p>LE Audio, Auracast, Channel Sounding für cm-Ortung, ultra-niedrige Latenz, bessere Energieeffizienz</p></div></div></div>
+        <div class="col-md-6"><div class="card"><img src="https://cdn.prod.website-files.com/650777ca9323df393e4fbcaa/653e18496e7429d323e5147f_image-02.png" class="card-img-top" alt="NFC Payment"><div class="card-body"><h5>NFC Release 15</h5><p>Reichweite bis 2 cm, zuverlässigeres Tappen, Digital Product Passport, erweiterte Wireless-Charging-Unterstützung</p></div></div></div>
 </div>
 `,
 
-    bluetooth: `
+            bluetooth: `
 <h2>Bluetooth - Stand Januar 2026 (Core Specification 6.0)</h2>
 
 <img src="https://c1.wallpaperflare.com/preview/638/495/740/earphones-headphones-black-music.jpg" class="cover-img mb-4" alt="Bluetooth Kopfhörer und Geräte">
@@ -166,19 +195,19 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 
 <h3>Neueste Features in Bluetooth 6.0</h3>
 <ul class="list-group list-group-flush">
-    <li class="list-group-item"><strong>Bluetooth Channel Sounding</strong> -> sichere, cm-genaue Distanzmessung (Phase-Based Ranging) zwischen Geräten - ideal für Find-My-Netzwerke, digitale Autoschlüssel, Smart Locks. Interoperabel zwischen Marken (z. B. Samsung-Phone findet Apple-AirPods)</li>
-    <li class="list-group-item"><strong>Auracast Broadcast Audio</strong> -> öffentliches, einseitiges Audio-Broadcasting (kein Pairing nötig). Beispiele: Flughafen-Ansagen, Bahnhof-Durchsagen, TV in Bars, Gottesdienste, Mehrsprachen-Übersetzung in Konferenzen. 2026 in vielen öffentlichen Orten verfügbar</li>
-    <li class="list-group-item">Verbesserte LE Audio: LC3-Codec + niedrigere Latenz, Multi-Stream (mehrere Geräte gleichzeitig), Hi-Res-Audio-Unterstützung</li>
-    <li class="list-group-item">Decision-Based Advertising Filtering -> schnelleres Scannen, weniger Akkuverbrauch bei vielen Werbepaketen</li>
-    <li class="list-group-item">Flexible Frame Spacing -> anpassbare Pausen zwischen Paketen -> optimierte Latenz oder höherer Datendurchsatz</li>
-    <li class="list-group-item">SNR Control & verbesserte Sicherheit gegen physische Angriffe</li>
-    <li class="list-group-item">Noch bessere Energieeffizienz für IoT -> Monate bis Jahre Laufzeit bei Sensoren</li>
+        <li class="list-group-item"><strong>Bluetooth Channel Sounding</strong> -> sichere, cm-genaue Distanzmessung (Phase-Based Ranging) zwischen Geräten - ideal für Find-My-Netzwerke, digitale Autoschlüssel, Smart Locks. Interoperabel zwischen Marken (z. B. Samsung-Phone findet Apple-AirPods)</li>
+        <li class="list-group-item"><strong>Auracast Broadcast Audio</strong> -> öffentliches, einseitiges Audio-Broadcasting (kein Pairing nötig). Beispiele: Flughafen-Ansagen, Bahnhof-Durchsagen, TV in Bars, Gottesdienste, Mehrsprachen-Übersetzung in Konferenzen. 2026 in vielen öffentlichen Orten verfügbar</li>
+        <li class="list-group-item">Verbesserte LE Audio: LC3-Codec + niedrigere Latenz, Multi-Stream (mehrere Geräte gleichzeitig), Hi-Res-Audio-Unterstützung</li>
+        <li class="list-group-item">Decision-Based Advertising Filtering -> schnelleres Scannen, weniger Akkuverbrauch bei vielen Werbepaketen</li>
+        <li class="list-group-item">Flexible Frame Spacing -> anpassbare Pausen zwischen Paketen -> optimierte Latenz oder höherer Datendurchsatz</li>
+        <li class="list-group-item">SNR Control & verbesserte Sicherheit gegen physische Angriffe</li>
+        <li class="list-group-item">Noch bessere Energieeffizienz für IoT -> Monate bis Jahre Laufzeit bei Sensoren</li>
 </ul>
 
 <p>2026: Viele neue Chipsets (Nordic nRF54, Goodix, Qualcomm, Texas Instruments) unterstützen Bluetooth 6.0 nativ. Erste smarte Schlösser, Tracker und True-Wireless-Kopfhörer mit Channel Sounding kommen auf den Markt.</p>
 `,
 
-    nfc: `
+            nfc: `
 <h2>NFC – Release 15 (2025/2026)</h2>
 
 <img src="https://cdn.prod.website-files.com/650777ca9323df393e4fbcaa/68de870190e3aa647df34d2e_f6105145.png" class="cover-img mb-4" alt="Kontaktloses Bezahlen mit NFC">
@@ -186,34 +215,34 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 <p class="lead">NFC Release 15 (veröffentlicht 2025, Zertifizierung ab Herbst 2025, erste Geräte ab Anfang 2026) vervierfacht die offizielle Reichweite von ~0,5 cm auf bis zu 2 cm – das macht Tappen im Alltag deutlich zuverlässiger und benutzerfreundlicher.</p>
 
 <ul class="list-group list-group-flush">
-    <li class="list-group-item"><strong>Erweiterte Reichweite (bis 2 cm)</strong> -> weniger präzises Ausrichten nötig, schnellerer Verbindungsaufbau, deutlich weniger Fehlversuche beim Bezahlen oder Türöffnen</li>
-    <li class="list-group-item">Kontaktloses Bezahlen & Zugangskontrolle (noch stabiler und schneller)</li>
-    <li class="list-group-item">Wireless Charging für Wearables & kleine Geräte (z. B. smarte Ringe, Ohrhörer-Cases, Fitness-Tracker)</li>
-    <li class="list-group-item"><strong>Digital Product Passport (EU)</strong> -> NFC-Tags in Produkten speichern Lebenszyklus-Daten (Reparatur, Recycling, Herkunft, CO₂-Fußabdruck) - Pflicht ab 2026/27 für viele Warengruppen</li>
-    <li class="list-group-item">Verbesserte Unterstützung für passive Tags & erweiterte NDEF-Records</li>
-    <li class="list-group-item">Sicherheit bleibt top: physikalische Nähe + Secure Element + starke Verschlüsselung</li>
+        <li class="list-group-item"><strong>Erweiterte Reichweite (bis 2 cm)</strong> -> weniger präzises Ausrichten nötig, schnellerer Verbindungsaufbau, deutlich weniger Fehlversuche beim Bezahlen oder Türöffnen</li>
+        <li class="list-group-item">Kontaktloses Bezahlen & Zugangskontrolle (noch stabiler und schneller)</li>
+        <li class="list-group-item">Wireless Charging für Wearables & kleine Geräte (z. B. smarte Ringe, Ohrhörer-Cases, Fitness-Tracker)</li>
+        <li class="list-group-item"><strong>Digital Product Passport (EU)</strong> -> NFC-Tags in Produkten speichern Lebenszyklus-Daten (Reparatur, Recycling, Herkunft, CO₂-Fußabdruck) - Pflicht ab 2026/27 für viele Warengruppen</li>
+        <li class="list-group-item">Verbesserte Unterstützung für passive Tags & erweiterte NDEF-Records</li>
+        <li class="list-group-item">Sicherheit bleibt top: physikalische Nähe + Secure Element + starke Verschlüsselung</li>
 </ul>
 
 <p>Erste Geräte mit Release 15 erscheinen 2026 - vor allem neue iPhones, Android-Handys (Pixel, Samsung Galaxy) und Wearables profitieren von zuverlässigerem Tappen.</p>
 `,
 
-    vergleich: `
+            vergleich: `
 <h2>Vergleich Bluetooth 6.0 vs. NFC Release 15 – 2026</h2>
 
 <table class="table table-striped table-hover table-bordered">
-    <thead class="table-dark"><tr><th>Merkmal</th><th>Bluetooth 6.0</th><th>NFC Release 15</th></tr></thead>
-    <tbody>
-        <tr><td>Reichweite</td><td>1-100+ m (klassisch) / cm-Ortung mit Channel Sounding</td><td>bis ~2 cm (4× mehr als vorher)</td></tr>
-        <tr><td>Datenrate</td><td>bis ~50 Mbit/s (LE Audio & High Data Throughput)</td><td>bis ~424 kbit/s</td></tr>
-        <tr><td>Verbindungsaufbau</td><td>Pairing / Bonding (kann Sekunden dauern)</td><td>sofort (Tap)</td></tr>
-        <tr><td>Energieverbrauch</td><td>sehr niedrig (BLE) - Monate/Jahre bei Sensoren</td><td>extrem niedrig, passive Tags ohne Batterie</td></tr>
-        <tr><td>Sicherheit</td><td>LE Secure Connections, Encrypted Advertising, Channel Sounding gegen Relay-Attacken</td><td>physikalische Nähe + Secure Element -> höchste Sicherheit bei Zahlung/Schlüssel</td></tr>
-        <tr><td>Haupteinsatz 2026</td><td>Audio (Auracast), IoT, cm-Ortung, Smart Home, Find My</td><td>Bezahlung, digitale Schlüssel, Product Passport, Tap-to-Charge</td></tr>
-    </tbody>
+        <thead class="table-dark"><tr><th>Merkmal</th><th>Bluetooth 6.0</th><th>NFC Release 15</th></tr></thead>
+        <tbody>
+            <tr><td>Reichweite</td><td>1-100+ m (klassisch) / cm-Ortung mit Channel Sounding</td><td>bis ~2 cm (4× mehr als vorher)</td></tr>
+            <tr><td>Datenrate</td><td>bis ~50 Mbit/s (LE Audio & High Data Throughput)</td><td>bis ~424 kbit/s</td></tr>
+            <tr><td>Verbindungsaufbau</td><td>Pairing / Bonding (kann Sekunden dauern)</td><td>sofort (Tap)</td></tr>
+            <tr><td>Energieverbrauch</td><td>sehr niedrig (BLE) - Monate/Jahre bei Sensoren</td><td>extrem niedrig, passive Tags ohne Batterie</td></tr>
+            <tr><td>Sicherheit</td><td>LE Secure Connections, Encrypted Advertising, Channel Sounding gegen Relay-Attacken</td><td>physikalische Nähe + Secure Element -> höchste Sicherheit bei Zahlung/Schlüssel</td></tr>
+            <tr><td>Haupteinsatz 2026</td><td>Audio (Auracast), IoT, cm-Ortung, Smart Home, Find My</td><td>Bezahlung, digitale Schlüssel, Product Passport, Tap-to-Charge</td></tr>
+        </tbody>
 </table>
 `,
 
-    security: `
+            security: `
 <h2>Sicherheit - Bluetooth 6.0 vs. NFC Release 15</h2>
 
 <img src="https://i.computer-bild.de/imgs/1/5/1/2/2/7/9/7/BLUFFS-Bluetooth-Luecke-4decacb74603f97a.jpg?impolicy=full_content" class="cover-img mb-4" alt="Sicherheit & Schutz bei Bluetooth und NFC">
@@ -221,137 +250,138 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 <p class="lead">Beide Technologien sind 2026 extrem sicher - aber auf unterschiedliche Weise und für unterschiedliche Anwendungsfälle optimiert.</p>
 
 <ul class="list-group">
-    <li class="list-group-item list-group-item-success"><strong>Bluetooth 6.0:</strong> LE Secure Connections, Encrypted Advertising Data, verbesserte Schutz gegen Man-in-the-Middle & Relay-Attacken durch Channel Sounding (physische Distanzprüfung). Sehr sicher für dauerhafte Verbindungen</li>
-    <li class="list-group-item list-group-item-success"><strong>NFC Release 15:</strong> physikalische Nähe (max. 2 cm) verhindert Abhören, Secure Element (Hardware-Chip) für Zahlungen & Schlüssel, starke Verschlüsselung (AES-256). Goldstandard für sensible Transaktionen</li>
-    <li class="list-group-item list-group-item-warning">Tipp: Bluetooth für längere Reichweite -> immer Pairing + aktuelle Firmware nutzen. NFC bleibt für Bezahlen, Tür öffnen, Autoschlüssel die sicherste und schnellste Wahl.</li>
+        <li class="list-group-item list-group-item-success"><strong>Bluetooth 6.0:</strong> LE Secure Connections, Encrypted Advertising Data, verbesserte Schutz gegen Man-in-the-Middle & Relay-Attacken durch Channel Sounding (physische Distanzprüfung). Sehr sicher für dauerhafte Verbindungen</li>
+        <li class="list-group-item list-group-item-success"><strong>NFC Release 15:</strong> physikalische Nähe (max. 2 cm) verhindert Abhören, Secure Element (Hardware-Chip) für Zahlungen & Schlüssel, starke Verschlüsselung (AES-256). Goldstandard für sensible Transaktionen</li>
+        <li class="list-group-item list-group-item-warning">Tipp: Bluetooth für längere Reichweite -> immer Pairing + aktuelle Firmware nutzen. NFC bleibt für Bezahlen, Tür öffnen, Autoschlüssel die sicherste und schnellste Wahl.</li>
 </ul>
 `,
 
-    energy: `
+            energy: `
 <h2>Energie & IoT</h2>
 
 <div class="row g-4">
-    <div class="col-md-6"><div class="card"><img src="https://freerangestock.com/sample/102171/headphones-resting-on-speaker.jpg?impolicy=full_content" class="card-img-top" alt="Bluetooth Low Energy"><div class="card-body"><h5>Bluetooth Low Energy</h5><p>Monate bis Jahre Laufzeit bei Sensoren, Uhren, Trackern und Smart-Home-Geräten. Bluetooth 6.0 verbessert die Effizienz nochmals deutlich.</p></div></div></div>
-    <div class="col-md-6"><div class="card"><img src="https://cdn.prod.website-files.com/650777ca9323df393e4fbcaa/653e225a4d9800b8d4102454_post4-img-01.png" class="card-img-top" alt="Passive NFC"><div class="card-body"><h5>Passive NFC-Tags</h5><p>Keine eigene Batterie nötig – Energie wird vom Lesegerät (Handy) übertragen. Ideal für Produkt-Tags, Recycling-Informationen, digitale Visitenkarten.</p></div></div></div>
+        <div class="col-md-6"><div class="card"><img src="https://freerangestock.com/sample/102171/headphones-resting-on-speaker.jpg?impolicy=full_content" class="card-img-top" alt="Bluetooth Low Energy"><div class="card-body"><h5>Bluetooth Low Energy</h5><p>Monate bis Jahre Laufzeit bei Sensoren, Uhren, Trackern und Smart-Home-Geräten. Bluetooth 6.0 verbessert die Effizienz nochmals deutlich.</p></div></div></div>
+        <div class="col-md-6"><div class="card"><img src="https://cdn.prod.website-files.com/650777ca9323df393e4fbcaa/653e225a4d9800b8d4102454_post4-img-01.png" class="card-img-top" alt="Passive NFC"><div class="card-body"><h5>Passive NFC-Tags</h5><p>Keine eigene Batterie nötig – Energie wird vom Lesegerät (Handy) übertragen. Ideal für Produkt-Tags, Recycling-Informationen, digitale Visitenkarten.</p></div></div></div>
 </div>
 
 <p class="mt-4">Kombination beider Technologien in IoT: NFC zum schnellen Pairing + Bluetooth für dauerhafte, energieeffiziente Kommunikation.</p>
 `,
 
-    future: `
+            future: `
 <h2>Zukunft 2026–2030</h2>
 
 <img src="https://www.smsmich.de/wp-content/uploads/Smartphone-NFC-1.jpg" class="w-50 mx-auto d-block rounded shadow mb-4" alt="Zukunft Smart Home">
 
 <ul class="list-group">
-    <li class="list-group-item">Auracast in Bahnhöfen, Flughäfen, Museen, Fitnessstudios, Gottesdiensten - öffentliches Audio für alle</li>
-    <li class="list-group-item">Universelle digitale Schlüssel (Auto, Haus, Büro, Fahrrad, Hotelzimmer) - Channel Sounding macht Relay-Attacken fast unmöglich</li>
-    <li class="list-group-item">Massive IoT-Netzwerke in Smart Cities: Bluetooth Mesh + NFC-Tags für Recycling, Parken, ÖPNV-Tickets</li>
-    <li class="list-group-item">Tap-to-Charge: NFC-basiertes kabelloses Laden für Wearables ohne präzises Ausrichten</li>
-    <li class="list-group-item">Digital Product Passport wird Standard - jedes Kleidungsstück, Elektrogerät, Möbelstück hat NFC-Tag mit Lebenszyklus-Info</li>
+        <li class="list-group-item">Auracast in Bahnhöfen, Flughäfen, Museen, Fitnessstudios, Gottesdiensten - öffentliches Audio für alle</li>
+        <li class="list-group-item">Universelle digitale Schlüssel (Auto, Haus, Büro, Fahrrad, Hotelzimmer) - Channel Sounding macht Relay-Attacken fast unmöglich</li>
+        <li class="list-group-item">Massive IoT-Netzwerke in Smart Cities: Bluetooth Mesh + NFC-Tags für Recycling, Parken, ÖPNV-Tickets</li>
+        <li class="list-group-item">Tap-to-Charge: NFC-basiertes kabelloses Laden für Wearables ohne präzises Ausrichten</li>
+        <li class="list-group-item">Digital Product Passport wird Standard - jedes Kleidungsstück, Elektrogerät, Möbelstück hat NFC-Tag mit Lebenszyklus-Info</li>
 </ul>
 
 <p class="mt-4 lead">Bluetooth und NFC werden bis 2030 noch enger zusammenarbeiten - NFC als Einstieg, Bluetooth als Dauerlösung.</p>
 `,
-   signaltool: `
+            signaltool: `
 <h2 class="mb-4">Interaktiver Reichweiten-Test</h2>
 <p class="lead">Ziehe das Smartphone zu den Geräten, um die Verbindung zu testen.</p>
 
 <div id="sandbox" style="position: relative; height: 400px; background: rgba(0,0,0,0.05); border-radius: 20px; border: 2px dashed #ccc; overflow: hidden; touch-action: none;">
-    <div id="nfc-target" style="position: absolute; left: 40px; top: 120px; text-align: center; width: 100px;">
-        <i class="fas fa-credit-card" style="font-size: 50px; color: #0d6efd;"></i>
-        <div id="nfc-status" class="badge bg-secondary mt-2">Getrennt</div>
-    </div>
-    <div id="bt-target" style="position: absolute; right: 60px; top: 120px; text-align: center; width: 100px;">
-        <i class="fas fa-volume-up" style="font-size: 50px; color: #6610f2;"></i>
-        <div id="bt-status" class="badge bg-secondary mt-2">Getrennt</div>
-    </div>
-    <div id="phone" style="position: absolute; left: 45%; top: 250px; cursor: grab; text-align: center; width: 60px; z-index: 100;">
-        <i class="fas fa-mobile-alt" style="font-size: 70px; color: #333;"></i>
-        <div id="phone-display" style="font-size: 10px; background: black; color: white; border-radius: 5px; position: absolute; top: 20px; left: 10px; width: 40px;">---</div>
-    </div>
+        <div id="nfc-target" style="position: absolute; left: 40px; top: 120px; text-align: center; width: 100px;">
+            <i class="fas fa-credit-card" style="font-size: 50px; color: #0d6efd;"></i>
+            <div id="nfc-status" class="badge bg-secondary mt-2">Getrennt</div>
+        </div>
+        <div id="bt-target" style="position: absolute; right: 60px; top: 120px; text-align: center; width: 100px;">
+            <i class="fas fa-volume-up" style="font-size: 50px; color: #6610f2;"></i>
+            <div id="bt-status" class="badge bg-secondary mt-2">Getrennt</div>
+        </div>
+        <div id="phone" style="position: absolute; left: 45%; top: 250px; cursor: grab; text-align: center; width: 60px; z-index: 100;">
+            <i class="fas fa-mobile-alt" style="font-size: 70px; color: #333;"></i>
+            <div id="phone-display" style="font-size: 10px; background: black; color: white; border-radius: 5px; position: absolute; top: 20px; left: 10px; width: 40px;">---</div>
+        </div>
 </div>
 
 <script>
 (function() {
-    const phone = document.getElementById('phone');
-    const sandbox = document.getElementById('sandbox');
-    if(!phone || !sandbox) return;
+        const phone = document.getElementById('phone');
+        const sandbox = document.getElementById('sandbox');
+        if(!phone || !sandbox) return;
 
-    let isDragging = false;
+        let isDragging = false;
 
-    const move = (e) => {
-        if (!isDragging) return;
-        const rect = sandbox.getBoundingClientRect();
-        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-        
-        let x = clientX - rect.left - 30;
-        let y = clientY - rect.top - 35;
-        
-        phone.style.left = Math.max(0, Math.min(x, rect.width - 60)) + 'px';
-        phone.style.top = Math.max(0, Math.min(y, rect.height - 80)) + 'px';
+        const move = (e) => {
+            if (!isDragging) return;
+            const rect = sandbox.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
 
-        const distNFC = Math.sqrt(Math.pow(x - 40, 2) + Math.pow(y - 120, 2));
-        const distBT = Math.sqrt(Math.pow(x - (rect.width - 120), 2) + Math.pow(y - 120, 2));
+            let x = clientX - rect.left - 30;
+            let y = clientY - rect.top - 35;
 
-        document.getElementById('nfc-status').className = distNFC < 60 ? "badge bg-success" : "badge bg-secondary";
-        document.getElementById('nfc-status').innerText = distNFC < 60 ? "✅ Bezahlt" : "Getrennt";
-        document.getElementById('bt-status').className = distBT < 200 ? "badge bg-primary" : "badge bg-secondary";
-        document.getElementById('bt-status').innerText = distBT < 200 ? "Verbunden" : "Suche...";
-        document.getElementById('phone-display').innerText = distNFC < 60 ? "NFC" : (distBT < 200 ? "BT" : "---");
-    };
+            phone.style.left = Math.max(0, Math.min(x, rect.width - 60)) + 'px';
+            phone.style.top = Math.max(0, Math.min(y, rect.height - 80)) + 'px';
 
-    phone.onmousedown = phone.ontouchstart = (e) => { isDragging = true; e.preventDefault(); };
-    window.onmouseup = window.ontouchend = () => isDragging = false;
-    window.onmousemove = window.ontouchmove = move;
+            const distNFC = Math.sqrt(Math.pow(x - 40, 2) + Math.pow(y - 120, 2));
+            const distBT = Math.sqrt(Math.pow(x - (rect.width - 120), 2) + Math.pow(y - 120, 2));
+
+            document.getElementById('nfc-status').className = distNFC < 60 ? "badge bg-success" : "badge bg-secondary";
+            document.getElementById('nfc-status').innerText = distNFC < 60 ? "✅ Bezahlt" : "Getrennt";
+            document.getElementById('bt-status').className = distBT < 200 ? "badge bg-primary" : "badge bg-secondary";
+            document.getElementById('bt-status').innerText = distBT < 200 ? "Verbunden" : "Suche...";
+            document.getElementById('phone-display').innerText = distNFC < 60 ? "NFC" : (distBT < 200 ? "BT" : "---");
+        };
+
+        phone.onmousedown = phone.ontouchstart = (e) => { isDragging = true; e.preventDefault(); };
+        window.onmouseup = window.ontouchend = () => isDragging = false;
+        window.onmousemove = window.ontouchmove = move;
 })();
 <\/script>
-` 
-};
+`
+        };
 
-function show(name) {
-    const contentBox = document.getElementById("content");
-    if (!contentBox) return;
+        function show(name) {
+            const contentBox = document.getElementById("content");
+            if (!contentBox) return;
 
-    contentBox.innerHTML = data[name];
+            contentBox.innerHTML = data[name];
 
-    const scripts = contentBox.querySelectorAll("script");
-    scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        newScript.text = oldScript.text;
-        document.body.appendChild(newScript).parentNode.removeChild(newScript);
-    });
+            const scripts = contentBox.querySelectorAll("script");
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement("script");
+                newScript.text = oldScript.text;
+                document.body.appendChild(newScript).parentNode.removeChild(newScript);
+            });
 
-    document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
-    // Fix: Selektor einfacher geschrieben
-    const activeBtn = document.querySelector('button[onclick="show(\'' + name + '\')"]');
-    if (activeBtn) activeBtn.classList.add('active');
-}
+            document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
+            // Fix: Selektor einfacher geschrieben
+            const activeBtn = document.querySelector('button[onclick="show(\'' + name + '\')"]');
+            if (activeBtn) activeBtn.classList.add('active');
+        }
 
-function toggleTheme() {
-    const html = document.documentElement;
-    const icon = document.getElementById('themeIcon');
-    const isDark = html.getAttribute('data-bs-theme') === 'dark';
-    const newTheme = isDark ? 'light' : 'dark';
-    html.setAttribute('data-bs-theme', newTheme);
-    icon.classList.toggle('fa-moon');
-    icon.classList.toggle('fa-sun');
-    localStorage.setItem('theme', newTheme);
-}
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            const isDark = html.getAttribute('data-bs-theme') === 'dark';
+            const newTheme = isDark ? 'light' : 'dark';
+            html.setAttribute('data-bs-theme', newTheme);
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+            localStorage.setItem('theme', newTheme);
+        }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-bs-theme', savedTheme);
-    const icon = document.getElementById('themeIcon');
-    if (savedTheme === 'dark' && icon) {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-    }
-    show("intro");
-});
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-bs-theme', savedTheme);
+            const icon = document.getElementById('themeIcon');
+            if (savedTheme === 'dark' && icon) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+            show("intro");
+        });
 
-</script> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
