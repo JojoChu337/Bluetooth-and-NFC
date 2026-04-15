@@ -283,192 +283,175 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 <p class="mt-4 lead">Bluetooth und NFC werden bis 2030 noch enger zusammenarbeiten - NFC als Einstieg, Bluetooth als Dauerlösung.</p>
 `,
             signaltool: `
-<h2 class="mb-4">Advanced Network Lab 2026</h2>
-<p class="lead">Simulation von Wellenausbreitung, Hindernis-Dämpfung (Attenuation) und Signal-to-Noise Ratio.</p>
+<h2 class="mb-4">Network Designer Sandbox 3.0</h2>
+<p class="lead">Baue dein eigenes Setup: Verschiebe die Nodes und wähle ein Zielgerät für den Handshake.</p>
 
 <div class="row mb-4 g-3">
+    <div class="col-md-4">
+        <label class="form-label small fw-bold">Aktion: Gerät koppeln</label>
+        <div class="btn-group w-100 shadow-sm" role="group">
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setPairing('bt')">BT Node</button>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setPairing('nfc')">NFC Tag</button>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="setPairing(null)">Trennen</button>
+        </div>
+    </div>
     <div class="col-md-3">
-        <label class="form-label small fw-bold">Umgebungsprofil</label>
+        <label class="form-label small fw-bold">Umgebung</label>
         <select id="env-select" class="form-select form-select-sm shadow-sm">
-            <option value="1">Vakuum / Labor (Lp 2.0)</option>
-            <option value="0.7">Büro / Holz (Lp 3.0)</option>
-            <option value="0.4">Beton / Industrie (Lp 4.5)</option>
+            <option value="1">Offenes Feld</option>
+            <option value="0.5">Stahlbeton-Labor</option>
         </select>
     </div>
-    <div class="col-md-3">
-        <label class="form-label small fw-bold">Interferenz</label>
-        <button class="btn btn-outline-danger btn-sm w-100 shadow-sm" onclick="toggleNoise()">
-            <i class="fas fa-wave-square"></i> EMI Rauschen: <span id="noise-status">AUS</span>
-        </button>
-    </div>
-    <div class="col-md-6">
-        <label class="form-label small fw-bold">System Log (Live)</label>
-        <div id="sim-log" class="p-2 border rounded bg-dark text-success font-monospace" style="height: 80px; overflow-y: auto; font-size: 11px;">
-            > System initialisiert...<br>> Warte auf Frame-Übertragung...
+    <div class="col-md-5">
+        <label class="form-label small fw-bold">Live Konsole</label>
+        <div id="sim-log" class="p-2 border rounded bg-dark text-info font-monospace" style="height: 60px; overflow-y: auto; font-size: 11px;">
+            > Sandbox bereit. Verschiebe Geräte zum Testen...
         </div>
     </div>
 </div>
 
-<div id="sandbox" style="position: relative; height: 500px; background: #e2e8f0; border-radius: 15px; border: 3px solid #64748b; overflow: hidden; touch-action: none;">
-    <div style="position: absolute; inset: 0; background-image: linear-gradient(#cbd5e1 1px, transparent 1px), linear-gradient(90deg, #cbd5e1 1px, transparent 1px); background-size: 40px 40px; opacity: 0.3;"></div>
+<div id="sandbox" style="position: relative; height: 500px; background: #f8fafc; border-radius: 15px; border: 2px solid #334155; overflow: hidden; touch-action: none;">
+    <div style="position: absolute; inset: 0; background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 30px 30px; opacity: 0.4;"></div>
 
-    <div id="waves" class="signal-wave"></div>
+    <svg id="connection-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;">
+        <line id="sig-line" x1="0" y1="0" x2="0" y2="0" stroke="gray" stroke-width="2" stroke-dasharray="5,5" opacity="0" />
+    </svg>
 
-    <div id="obstacle" style="position: absolute; left: 300px; top: 150px; width: 30px; height: 200px; background: #94a3b8; border: 2px solid #475569; border-radius: 5px; cursor: move; z-index: 10; display: flex; align-items: center; justify-content: center;">
-        <i class="fas fa-bars text-white-50"></i>
+    <div id="wall" class="draggable-node" style="position: absolute; left: 250px; top: 150px; width: 20px; height: 180px; background: #64748b; border-radius: 4px; cursor: move; z-index: 10;">
+        <div style="font-size: 10px; color: white; transform: rotate(90deg); margin-top: 80px; text-align: center;">MAUER</div>
     </div>
 
-    <div id="nfc-target" style="position: absolute; left: 40px; top: 40px; text-align: center; width: 80px;">
-        <i class="fas fa-id-card-alt text-primary" style="font-size: 45px;"></i>
-        <div class="badge bg-white text-dark border shadow-sm mt-1">NFC Tag</div>
-        <div id="nfc-val" class="small fw-bold">OFF</div>
+    <div id="node-bt" class="draggable-node text-center" style="position: absolute; right: 50px; top: 50px; width: 80px; cursor: move; z-index: 10;">
+        <i class="fab fa-bluetooth-b text-primary" style="font-size: 40px;"></i>
+        <div class="badge bg-dark d-block">BT 6.0</div>
+        <div id="bt-rssi" class="small fw-bold">---</div>
     </div>
 
-    <div id="bt-target" style="position: absolute; right: 60px; top: 50px; text-align: center; width: 100px;">
-        <i class="fas fa-compact-disc text-indigo" style="font-size: 45px; color: #6366f1;"></i>
-        <div class="badge bg-white text-dark border shadow-sm mt-1">BT 6.0 Node</div>
-        <div id="bt-val" class="small fw-bold">-90 dBm</div>
+    <div id="node-nfc" class="draggable-node text-center" style="position: absolute; left: 50px; top: 50px; width: 80px; cursor: move; z-index: 10;">
+        <i class="fas fa-rss-square text-success" style="font-size: 40px;"></i>
+        <div class="badge bg-dark d-block">NFC Tag</div>
     </div>
 
-    <div id="phone" style="position: absolute; left: 100px; top: 350px; cursor: grab; text-align: center; width: 60px; z-index: 100;">
-        <div class="phone-case shadow-lg" style="background: #1e293b; border-radius: 10px; padding: 5px; border: 2px solid #475569;">
-            <div id="phone-screen" style="background: #000; height: 70px; border-radius: 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #0f0; font-family: monospace; font-size: 10px;">
-                <span id="p-mode">IDLE</span>
-                <span id="p-stat">---</span>
+    <div id="phone" class="draggable-node" style="position: absolute; left: 220px; top: 380px; width: 50px; cursor: move; z-index: 100;">
+        <div style="background: #1e293b; border-radius: 8px; height: 80px; border: 2px solid #475569; padding: 4px;">
+            <div id="phone-ui" style="background: #000; height: 100%; border-radius: 4px; font-size: 9px; color: #0f0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                <span id="p-label">IDLE</span>
+                <span id="p-val" style="font-size: 8px;"></span>
             </div>
         </div>
-        <div class="mt-2 small fw-bold">Mobile Device</div>
     </div>
 </div>
-
-<style>
-    .signal-wave {
-        position: absolute;
-        width: 10px; height: 10px;
-        border: 2px solid rgba(99, 102, 241, 0.5);
-        border-radius: 50%;
-        pointer-events: none;
-        transform: translate(-50%, -50%);
-        animation: pulse 3s infinite linear;
-        display: none;
-    }
-    @keyframes pulse {
-        0% { width: 0; height: 0; opacity: 1; }
-        100% { width: 600px; height: 600px; opacity: 0; }
-    }
-</style>
 
 <script>
 (function() {
-    const phone = document.getElementById('phone');
-    const obstacle = document.getElementById('obstacle');
     const sandbox = document.getElementById('sandbox');
     const log = document.getElementById('sim-log');
-    const waves = document.getElementById('waves');
+    const line = document.getElementById('sig-line');
     
-    let isDragging = null; // Speichert welches Element gezogen wird
-    let noiseActive = false;
-    let lastState = "";
+    let activeDragging = null;
+    let pairedWith = null; // 'bt' oder 'nfc' oder null
+    let offset = { x: 0, y: 0 };
 
     function addLog(msg) {
-        const time = new Date().toLocaleTimeString();
-        log.innerHTML = \`<div><span class="text-white-50">[\${time}]</span> \${msg}</div>\` + log.innerHTML;
+        log.innerHTML = \`<div>> \${msg}</div>\` + log.innerHTML;
     }
 
-    window.toggleNoise = () => {
-        noiseActive = !noiseActive;
-        document.getElementById('noise-status').innerText = noiseActive ? "AN" : "AUS";
-        addLog(noiseActive ? "EMI Störung aktiviert!" : "Störung beseitigt.");
-    };
-
-    const handleStart = (e, type) => {
-        isDragging = type;
-        e.preventDefault();
-    };
-
-    phone.onmousedown = (e) => handleStart(e, 'phone');
-    obstacle.onmousedown = (e) => handleStart(e, 'wall');
-    window.onmouseup = () => isDragging = null;
-
-    window.onmousemove = (e) => {
-        if (!isDragging) return;
-        const rect = sandbox.getBoundingClientRect();
-        const x = (e.clientX || e.touches[0].clientX) - rect.left;
-        const y = (e.clientY || e.touches[0].clientY) - rect.top;
-
-        if (isDragging === 'phone') {
-            phone.style.left = (x - 30) + 'px';
-            phone.style.top = (y - 50) + 'px';
-            waves.style.left = x + 'px';
-            waves.style.top = y + 'px';
-            waves.style.display = 'block';
-        } else if (isDragging === 'wall') {
-            obstacle.style.left = (x - 15) + 'px';
-            obstacle.style.top = (y - 100) + 'px';
-        }
-
-        updateSimulation();
-    };
-
-    function updateSimulation() {
-        const pX = parseInt(phone.style.left) + 30;
-        const pY = parseInt(phone.style.top) + 40;
-        const btX = parseInt(document.getElementById('bt-target').style.right) === 60 ? sandbox.offsetWidth - 110 : 0; 
-        const btY = 100;
-
-        // Distanz-Berechnung
-        const dBT = Math.sqrt(Math.pow(pX - (sandbox.offsetWidth - 110), 2) + Math.pow(pY - 100, 2));
-        const dNFC = Math.sqrt(Math.pow(pX - 80, 2) + Math.pow(pY - 80, 2));
-
-        // Mauer-Check (Einfache Kollision zwischen Phone und BT-Node)
-        const wallX = parseInt(obstacle.style.left);
-        const wallY = parseInt(obstacle.style.top);
-        let attenuation = 0;
-        
-        // Wenn die Mauer zwischen Phone und BT steht
-        if ((pX < wallX && wallX < (sandbox.offsetWidth - 110)) || (pX > wallX && wallX > (sandbox.offsetWidth - 110))) {
-            if (pY > wallY && pY < wallY + 200) attenuation = 35; // 35 dBm Verlust durch Mauer
-        }
-
-        const env = parseFloat(document.getElementById('env-select').value);
-        const noise = noiseActive ? Math.random() * 15 : 0;
-        
-        // Bluetooth Logik
-        let rssi = Math.round(-30 - (dBT / (5 * env)) - attenuation - noise);
-        const btVal = document.getElementById('bt-val');
-        btVal.innerText = rssi + " dBm";
-        
-        if (rssi > -70) {
-            btVal.className = "small fw-bold text-success";
-            document.getElementById('p-mode').innerText = "BT 6.0";
-            document.getElementById('p-stat').innerText = "LINK " + (rssi + 100) + "%";
-            if(lastState !== "BT") { addLog("BT 6.0 Verbindung stabil."); lastState = "BT"; }
-        } else if (rssi > -90) {
-            btVal.className = "small fw-bold text-warning";
-            document.getElementById('p-mode').innerText = "BT 6.0";
-            document.getElementById('p-stat').innerText = "LOW SIG";
+    // Pairing setzen
+    window.setPairing = (type) => {
+        pairedWith = type;
+        if(type) {
+            addLog(\`Pairing-Modus: Suche \${type.toUpperCase()}...\`);
+            line.setAttribute('opacity', '1');
         } else {
-            btVal.className = "small fw-bold text-danger";
-            if(lastState === "BT") { addLog("BT Verbindung verloren!"); lastState = ""; }
+            addLog("Verbindungen getrennt.");
+            line.setAttribute('opacity', '0');
         }
+        updateSim();
+    };
 
-        // NFC Logik
-        const nfcVal = document.getElementById('nfc-val');
-        if (dNFC < 50) {
-            nfcVal.innerText = "CONNECTED";
-            nfcVal.className = "small fw-bold text-primary";
-            document.getElementById('p-mode').innerText = "NFC";
-            document.getElementById('p-stat').innerText = "TAP OK";
-            if(lastState !== "NFC") { addLog("NFC Handshake erfolgreich."); lastState = "NFC"; }
+    // Drag & Drop Logik für alle .draggable-node
+    document.querySelectorAll('.draggable-node').forEach(node => {
+        node.addEventListener('mousedown', e => {
+            activeDragging = node;
+            const rect = node.getBoundingClientRect();
+            offset.x = e.clientX - rect.left;
+            offset.y = e.clientY - rect.top;
+            node.style.zIndex = 1000;
+        });
+    });
+
+    window.addEventListener('mousemove', e => {
+        if (!activeDragging) return;
+        const sRect = sandbox.getBoundingClientRect();
+        let x = e.clientX - sRect.left - offset.x;
+        let y = e.clientY - sRect.top - offset.y;
+
+        // Grenzen einhalten
+        x = Math.max(0, Math.min(x, sandbox.offsetWidth - activeDragging.offsetWidth));
+        y = Math.max(0, Math.min(y, sandbox.offsetHeight - activeDragging.offsetHeight));
+
+        activeDragging.style.left = x + 'px';
+        activeDragging.style.top = y + 'px';
+        updateSim();
+    });
+
+    window.addEventListener('mouseup', () => {
+        if (activeDragging) activeDragging.style.zIndex = 10;
+        activeDragging = null;
+    });
+
+    function updateSim() {
+        const phone = document.getElementById('phone');
+        const bt = document.getElementById('node-bt');
+        const nfc = document.getElementById('node-nfc');
+        const wall = document.getElementById('wall');
+
+        const getCenter = (el) => ({
+            x: parseInt(el.style.left) + el.offsetWidth / 2,
+            y: parseInt(el.style.top) + el.offsetHeight / 2
+        });
+
+        const pC = getCenter(phone);
+        let targetNode = pairedWith === 'bt' ? bt : (pairedWith === 'nfc' ? nfc : null);
+
+        if (targetNode) {
+            const tC = getCenter(targetNode);
+            line.setAttribute('x1', pC.x); line.setAttribute('y1', pC.y);
+            line.setAttribute('x2', tC.x); line.setAttribute('y2', tC.y);
+
+            const dist = Math.sqrt(Math.pow(pC.x - tC.x, 2) + Math.pow(pC.y - tC.y, 2));
+            const env = parseFloat(document.getElementById('env-select').value);
+            
+            // Check ob Mauer im Weg (vereinfacht)
+            const wX = parseInt(wall.style.left);
+            const wY = parseInt(wall.style.top);
+            let blocked = false;
+            if (((pC.x < wX && tC.x > wX) || (pC.x > wX && tC.x < wX)) && 
+                (pC.y > wY && pC.y < wY + 180)) blocked = true;
+
+            if (pairedWith === 'bt') {
+                let rssi = Math.round(-30 - (dist / (6 * env)) - (blocked ? 30 : 0));
+                document.getElementById('bt-rssi').innerText = rssi + " dBm";
+                document.getElementById('p-label').innerText = "BT 6.0";
+                document.getElementById('p-val').innerText = rssi + " dBm";
+                
+                // Farbe der Linie
+                line.setAttribute('stroke', rssi > -70 ? '#10b981' : (rssi > -90 ? '#f59e0b' : '#ef4444'));
+            } else if (pairedWith === 'nfc') {
+                if (dist < 60) {
+                    document.getElementById('p-label').innerText = "NFC";
+                    document.getElementById('p-val').innerText = "LINK OK";
+                    line.setAttribute('stroke', '#10b981');
+                } else {
+                    document.getElementById('p-label').innerText = "NFC";
+                    document.getElementById('p-val').innerText = "OUT OF RANGE";
+                    line.setAttribute('stroke', '#ef4444');
+                }
+            }
         } else {
-            nfcVal.innerText = "OFF";
-            nfcVal.className = "small fw-bold";
-        }
-
-        if (dNFC >= 50 && rssi <= -90) {
-            document.getElementById('p-mode').innerText = "IDLE";
-            document.getElementById('p-stat').innerText = "---";
-            lastState = "";
+            document.getElementById('p-label').innerText = "IDLE";
+            document.getElementById('p-val').innerText = "";
+            line.setAttribute('opacity', '0');
         }
     }
 })();
