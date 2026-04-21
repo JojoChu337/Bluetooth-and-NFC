@@ -406,10 +406,15 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
         const nfc = document.getElementById('node-nfc');
         const wall = document.getElementById('wall');
 
-        const getCenter = (el) => ({
-            x: parseInt(el.style.left) + el.offsetWidth / 2,
-            y: parseInt(el.style.top) + el.offsetHeight / 2
-        });
+        const getCenter = (el) => {
+    const rect = el.getBoundingClientRect();
+    const parentRect = sandbox.getBoundingClientRect();
+
+    return {
+        x: rect.left - parentRect.left + rect.width / 2,
+        y: rect.top - parentRect.top + rect.height / 2
+    };
+};
 
         const pC = getCenter(phone);
         let targetNode = pairedWith === 'bt' ? bt : (pairedWith === 'nfc' ? nfc : null);
