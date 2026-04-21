@@ -283,12 +283,12 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 <p class="mt-4 lead">Bluetooth und NFC werden bis 2030 noch enger zusammenarbeiten - NFC als Einstieg, Bluetooth als Dauerlösung.</p>
 `,
             signaltool: `
-<h2 class="mb-4">Network Designer 4.2 (Compact)</h2>
-<p class="lead">Fokus auf Nahbereich: 30-Meter-Simulation.</p>
+<h2 class="mb-4">Network Designer 4.3 (White Label Edition)</h2>
+<p class="lead">30-Meter-Simulation mit weißer Beschriftung.</p>
 
-<div class="row mb-4 g-3 p-3 bg-body-tertiary rounded-4 shadow-sm">
+<div class="row mb-4 g-3 p-3 bg-dark rounded-4 shadow-sm">
     <div class="col-md-3">
-        <label class="form-label small fw-bold text-dark">Gerät koppeln:</label>
+        <label class="form-label small fw-bold text-white">Gerät koppeln:</label>
         <select id="target-select" class="form-select form-select-sm" onchange="setPairing(this.value)">
             <option value="null">Kein Gerät</option>
             <option value="bt">Bluetooth Node</option>
@@ -296,7 +296,7 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
         </select>
     </div>
     <div class="col-md-3">
-        <label class="form-label small fw-bold text-dark">BT Version:</label>
+        <label class="form-label small fw-bold text-white">BT Version:</label>
         <select id="bt-version" class="form-select form-select-sm" onchange="updateSim()">
             <option value="4.0">Bluetooth 4.0</option>
             <option value="5.0" selected>Bluetooth 5.0</option>
@@ -304,7 +304,7 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
         </select>
     </div>
     <div class="col-md-3">
-        <label class="form-label small fw-bold text-dark">Mauer-Material:</label>
+        <label class="form-label small fw-bold text-white">Mauer-Material:</label>
         <select id="wall-material" class="form-select form-select-sm" onchange="updateWallStyle()">
             <option value="wood">Holz</option>
             <option value="plastic">Kunststoff</option>
@@ -313,7 +313,7 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
         </select>
     </div>
     <div class="col-md-3">
-        <label class="form-label small fw-bold text-dark">Dämpfung:</label>
+        <label class="form-label small fw-bold text-white">Dämpfung:</label>
         <select id="env-select" class="form-select form-select-sm" onchange="updateSim()">
             <option value="1">Keine (Vakuum)</option>
             <option value="0.7" selected>Normal (Büro)</option>
@@ -421,7 +421,6 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
         });
 
         const pC = getC(phone);
-        // NEUE SKALA: 1 Meter = 16.6 Pixel (Feld ist ca. 30 Meter breit)
         const distBT = (Math.sqrt(Math.pow(pC.x - getC(bt).x, 2) + Math.pow(pC.y - getC(bt).y, 2)) / 16.6).toFixed(1);
         const distNFC = (Math.sqrt(Math.pow(pC.x - getC(nfc).x, 2) + Math.pow(pC.y - getC(nfc).y, 2)) / 16.6).toFixed(1);
 
@@ -445,11 +444,6 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 
             if (pairedWith === 'bt') {
                 const btVer = document.getElementById('bt-version').value;
-                
-                /* EXTREM KURZE dBm ERKLÄRUNG:
-                   -30 = Super Signal (nah dran)
-                   -90 = Fast weg (weit weg)
-                   Die Formel zieht für jeden Meter und jede Mauer Punkte ab. */
                 let base = (btVer === '4.0') ? -45 : (btVer === '5.0' ? -35 : -25);
                 let rssi = Math.round(base - (distBT * (2.5/env)) - (blocked ? mat.damp : 0));
                 
@@ -457,7 +451,7 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
                 document.getElementById('p-val').innerText = rssi + " dBm";
                 line.setAttribute('stroke', rssi > -70 ? '#10b981' : (rssi > -90 ? '#f59e0b' : '#ef4444'));
             } else {
-                let ok = distNFC < 1.0; // NFC Reichweite auf 1m erhöht für bessere Bedienung
+                let ok = distNFC < 1.0; 
                 document.getElementById('p-label').innerText = "NFC";
                 document.getElementById('p-val').innerText = ok ? "VERBUNDEN" : "ZU WEIT";
                 line.setAttribute('stroke', ok ? '#10b981' : '#ef4444');
