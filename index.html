@@ -283,125 +283,132 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 <p class="mt-4 lead">Bluetooth und NFC werden bis 2030 noch enger zusammenarbeiten - NFC als Einstieg, Bluetooth als Dauerlösung.</p>
 `,
             signaltool: `
-<h2 class="mb-4">Network Designer 5.1</h2>
-<p class="lead">Kompakte 30-Meter-Simulation für den Hausgebrauch.</p>
+<div class="p-3 rounded-4 border shadow-sm">
+    <h2 class="mb-4 text-primary">Network Designer 6.1</h2>
+    <p class="lead text-body-secondary">20-Meter-Feld | Whiteboard Edition</p>
 
-<div class="row mb-4 g-3 p-3 bg-dark rounded-4 shadow-sm">
-    <div class="col-md-3">
-        <label class="form-label small fw-bold text-white">Verbindung:</label>
-        <select id="target-select" class="form-select form-select-sm" onchange="setPairing(this.value)">
-            <option value="null">Kein Gerät</option>
-            <option value="bt">Bluetooth Box</option>
-        </select>
-    </div>
-    <div class="col-md-3">
-        <label class="form-label small fw-bold text-white">Mauer-Typ:</label>
-        <select id="wall-material" class="form-select form-select-sm" onchange="updateWallStyle()">
-            <option value="none">Keine Mauer</option>
-            <option value="wood">Holztür</option>
-            <option value="concrete" selected>Betonwand</option>
-            <option value="metal">Stahlträger</option>
-        </select>
-    </div>
-    <div class="col-md-3">
-        <label class="form-label small fw-bold text-white">Hardware:</label>
-        <select id="bt-version" class="form-select form-select-sm" onchange="updateSim()">
-            <option value="4.0">Altes Handy (4.0)</option>
-            <option value="5.0" selected>Modernes Handy (5.0)</option>
-        </select>
-    </div>
-    <div class="col-md-3">
-        <label class="form-label small fw-bold text-white">Zustand:</label>
-        <select id="env-select" class="form-select form-select-sm" onchange="updateSim()">
-            <option value="1">Freie Sicht</option>
-            <option value="0.7">Viele Möbel</option>
-        </select>
-    </div>
-</div>
-
-<div id="sandbox" style="position: relative; height: 450px; background: #f1f5f9; border-radius: 15px; border: 2px solid #334155; overflow: hidden; touch-action: none;">
-    <div style="position: absolute; bottom: 10px; right: 10px; background: #000; color: white; padding: 2px 10px; border-radius: 4px; font-size: 11px; z-index: 20; border: 1px solid #fff;">
-        <div style="width: 83px; border-bottom: 2px solid white; margin-bottom: 2px;"></div> 5 Meter
+    <!-- Top-Bar Auswahl -->
+    <div class="row mb-3 g-2 p-3 rounded-4 bg-body-tertiary border border-secondary-subtle">
+        <div class="col-md-3">
+            <label class="form-label small fw-bold text-body">Verbindung</label>
+            <select id="target-select" class="form-select form-select-sm bg-body text-body border-secondary" onchange="setPairing(this.value)">
+                <option value="null">Ausgeschaltet</option>
+                <option value="bt">Bluetooth Box</option>
+                <option value="nfc">NFC Tag</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small fw-bold text-body">Wand-Material</label>
+            <select id="wall-material" class="form-select form-select-sm bg-body text-body border-secondary" onchange="updateWallStyle()">
+                <option value="none">Keine Wand</option>
+                <option value="wood">Holz (Maserung)</option>
+                <option value="concrete" selected>Beton (Massiv)</option>
+                <option value="metal">Metall (Eisen)</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small fw-bold text-body">Umgebung</label>
+            <select id="env-select" class="form-select form-select-sm bg-body text-body border-secondary" onchange="updateSim()">
+                <option value="1">Vakuum</option>
+                <option value="0.7" selected>Büro</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small fw-bold text-body">Handy-Typ</label>
+            <select id="bt-version" class="form-select form-select-sm bg-body text-body border-secondary" onchange="updateSim()">
+                <option value="4.0">Legacy (4.0)</option>
+                <option value="5.0" selected>Modern (5.0)</option>
+            </select>
+        </div>
     </div>
 
-    <svg id="connection-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;">
-        <line id="sig-line" x1="0" y1="0" x2="0" y2="0" stroke="gray" stroke-width="3" stroke-dasharray="8,4" opacity="0" />
-    </svg>
+    <!-- Das Simulationsfeld (Sandbox) - Jetzt HELL -->
+    <div id="sandbox" style="position: relative; height: 400px; background: #f8f9fa; border-radius: 12px; border: 2px solid #dee2e6; overflow: hidden; touch-action: none;">
+        <!-- Skala 5m (Dunkle Schrift für hellen Hintergrund) -->
+        <div style="position: absolute; bottom: 15px; right: 15px; background: rgba(255,255,255,0.9); color: #334155; padding: 4px 12px; border-radius: 6px; font-size: 11px; z-index: 20; border: 1px solid #cbd5e1;">
+            <div style="width: 100px; border-bottom: 2px solid #334155; margin-bottom: 3px;"></div> 5 Meter
+        </div>
 
-    <div id="wall" class="draggable-node shadow" style="position: absolute; left: 240px; top: 120px; width: 25px; height: 200px; border-radius: 4px; cursor: move; z-index: 10;">
-        <div id="wall-label" style="font-size: 9px; color: white; transform: rotate(90deg); margin-top: 90px; text-align: center; font-weight: bold; pointer-events: none;">BETON</div>
-    </div>
+        <svg id="connection-svg" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;">
+            <line id="sig-line" x1="0" y1="0" x2="0" y2="0" stroke="#0d6efd" stroke-width="3" stroke-dasharray="8,4" opacity="0" />
+        </svg>
 
-    <div id="node-bt" class="draggable-node text-center" style="position: absolute; left: 420px; top: 50px; width: 60px; cursor: move; z-index: 10;">
-        <i class="fas fa-volume-up text-primary" style="font-size: 30px;"></i>
-        <div id="bt-dist" class="fw-bold text-black" style="font-size: 13px; background: #fff; border: 1px solid #000; border-radius: 4px; padding: 0 2px;">0m</div>
-    </div>
+        <!-- Wand -->
+        <div id="wall" class="draggable-node" style="position: absolute; left: 200px; top: 100px; width: 30px; height: 180px; border-radius: 4px; cursor: move; z-index: 10; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div id="wall-label" style="font-size: 10px; color: white; transform: rotate(90deg); margin-top: 80px; text-align: center; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">BETON</div>
+        </div>
 
-    <div id="node-jammer" class="draggable-node text-center" style="position: absolute; left: 50px; top: 220px; width: 60px; cursor: move; z-index: 10;">
-        <i class="fas fa-biohazard text-danger" style="font-size: 30px;"></i>
-        <div style="font-size: 10px; font-weight: bold; color: #dc3545;">MIKROWELLE</div>
-    </div>
+        <!-- Icons (Dunkle Labels für bessere Lesbarkeit auf hell) -->
+        <div id="node-bt" class="draggable-node text-center" style="position: absolute; left: 350px; top: 40px; width: 60px; cursor: move; z-index: 10;">
+            <i class="fas fa-volume-up" style="font-size: 30px; color: #0d6efd;"></i>
+            <div id="bt-dist" class="fw-bold mt-1" style="font-size: 12px; color: #334155;">0m</div>
+        </div>
 
-    <div id="node-booster" class="draggable-node text-center" style="position: absolute; left: 420px; top: 320px; width: 60px; cursor: move; z-index: 10;">
-        <i class="fas fa-wifi text-info" style="font-size: 30px;"></i>
-        <div style="font-size: 10px; font-weight: bold; color: #0dcaf0;">REPEATER</div>
-    </div>
+        <div id="node-nfc" class="draggable-node text-center" style="position: absolute; left: 40px; top: 40px; width: 60px; cursor: move; z-index: 10;">
+            <i class="fas fa-rss" style="font-size: 30px; color: #198754;"></i>
+            <div id="nfc-dist" class="fw-bold mt-1" style="font-size: 12px; color: #334155;">0m</div>
+        </div>
 
-    <div id="phone" class="draggable-node" style="position: absolute; left: 80px; top: 350px; width: 50px; cursor: move; z-index: 100;">
-        <div style="background: #1e293b; border-radius: 8px; height: 80px; border: 2px solid #475569; padding: 4px; box-shadow: 0 10px 20px rgba(0,0,0,0.4);">
-            <div id="phone-ui" style="background: #000; height: 100%; border-radius: 4px; font-size: 10px; color: #0f0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
-                <div id="p-label" style="font-weight: bold;">OFF</div>
-                <div id="p-val" style="color: #fff; font-size: 11px;"></div>
+        <div id="node-jammer" class="draggable-node text-center" style="position: absolute; left: 50px; top: 280px; width: 60px; cursor: move; z-index: 10;">
+            <i class="fas fa-radiation-alt" style="font-size: 25px; color: #dc3545;"></i>
+            <div style="font-size: 9px; color: #dc3545; font-weight: bold;">STÖRER</div>
+        </div>
+
+        <div id="node-booster" class="draggable-node text-center" style="position: absolute; left: 350px; top: 280px; width: 60px; cursor: move; z-index: 10;">
+            <i class="fas fa-rocket" style="font-size: 25px; color: #f59e0b;"></i>
+            <div style="font-size: 9px; color: #f59e0b; font-weight: bold;">BOOSTER</div>
+        </div>
+
+        <!-- Handy -->
+        <div id="phone" class="draggable-node" style="position: absolute; left: 180px; top: 300px; width: 50px; cursor: move; z-index: 100;">
+            <div style="background: #334155; border-radius: 10px; height: 85px; border: 2px solid #0d6efd; padding: 5px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);">
+                <div id="phone-ui" style="background: #000; height: 100%; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                    <div id="p-label" style="font-size: 9px; color: #0d6efd; font-weight: bold;">OFF</div>
+                    <div id="p-val" style="color: #fff; font-size: 11px;"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="mt-4 p-3 bg-light rounded-4 border">
-    <div class="row">
-        <div class="col-md-6">
-            <h5 class="fw-bold"><i class="fas fa-info-circle me-2"></i>Status-Check</h5>
-            <ul class="small list-unstyled">
-                <li><strong>Idle:</strong> Handy sucht noch – wähl oben "Bluetooth Box" aus.</li>
-                <li><strong>dBm (Zahl):</strong> Signalstärke. Je näher an 0, desto besser! (-40 = super, -90 = ruckelt).</li>
-                <li><strong>Mauer:</strong> Blockiert Wellen. Stahl (-80) killt das Signal fast sofort.</li>
-            </ul>
-        </div>
-        <div class="col-md-6">
-            <h5 class="fw-bold"><i class="fas fa-Exclamation-triangle me-2"></i>Einflüsse</h5>
-            <ul class="small list-unstyled">
-                <li><strong>Mikrowelle:</strong> Strahlungs-Chaos! Zieht massiv Leistung ab, wenn du nah dran bist.</li>
-                <li><strong>Repeater:</strong> "Schubst" dein Signal an. Gibt dir einen +15 dBm Bonus.</li>
-                <li><strong>Abstand:</strong> Je weiter weg, desto leiser "flüstert" das Signal (Physik, Bro).</li>
-            </ul>
+    <!-- Info-Box: Bleibt adaptiv (Bootstrap Klassen) -->
+    <div class="mt-3 p-3 rounded-4 bg-body-secondary border border-secondary-subtle shadow-sm">
+        <div class="row small text-body">
+            <div class="col-md-6 border-md-end border-secondary-subtle">
+                <h6 class="fw-bold text-primary"><i class="fas fa-info-circle me-1"></i> Status-Check</h6>
+                <p class="mb-1"><strong>dBm-Wert:</strong> Je näher an 0, desto stärker. -30 ist perfekt, -90 ist Abbruch.</p>
+                <p class="mb-0"><strong>Wand:</strong> Metall schluckt fast 100% der Wellen.</p>
+            </div>
+            <div class="col-md-6 ps-md-3 mt-3 mt-md-0">
+                <h6 class="fw-bold text-warning"><i class="fas fa-bolt me-1"></i> Einflüsse</h6>
+                <p class="mb-1"><strong>Störer:</strong> Simuliert Interferenzen (-40 dBm).</p>
+                <p class="mb-0"><strong>NFC:</strong> Reagiert nur bei Kontakt (unter 1m).</p>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
 (function() {
-    const sandbox = document.getElementById('sandbox');
     const wall = document.getElementById('wall');
     const line = document.getElementById('sig-line');
-    let activeDragging = null;
+    const sandbox = document.getElementById('sandbox');
     let pairedWith = null;
+    let activeDragging = null;
     let offset = { x: 0, y: 0 };
 
     const materials = {
-        none: { name: '', background: 'transparent', border: 'none', damp: 0, hide: true },
-        wood: { name: 'HOLZ', damp: 15, background: "repeating-linear-gradient(45deg, #b45309, #b45309 5px, #8c4300 5px, #8c4300 10px)", border: "2px solid #78350f" },
-        concrete: { name: 'BETON', damp: 35, background: "linear-gradient(135deg, #64748b, #475569)", border: "3px solid #334155" },
-        metal: { name: 'STAHL', damp: 85, background: "linear-gradient(90deg, #1e293b, #ffffff, #1e293b)", border: "2px solid #e2e8f0" }
+        none: { name: '', damp: 0, hide: true },
+        wood: { name: 'HOLZ', damp: 15, bg: "repeating-linear-gradient(45deg, #78350f, #78350f 10px, #92400e 10px, #92400e 20px)" },
+        concrete: { name: 'BETON', damp: 35, bg: "#64748b" },
+        metal: { name: 'METALL', damp: 85, bg: "linear-gradient(90deg, #1e293b, #94a3b8, #1e293b)" }
     };
 
     window.updateWallStyle = () => {
         const m = materials[document.getElementById('wall-material').value];
-        if (m.hide) {
-            wall.style.display = 'none';
-        } else {
+        if (m.hide) { wall.style.display = 'none'; } 
+        else {
             wall.style.display = 'block';
-            wall.style.background = m.background;
-            wall.style.border = m.border;
+            wall.style.background = m.bg;
             document.getElementById('wall-label').innerText = m.name;
         }
         updateSim();
@@ -409,7 +416,7 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 
     window.setPairing = (val) => {
         pairedWith = (val === 'null') ? null : val;
-        line.setAttribute('opacity', pairedWith === 'bt' ? '1' : '0');
+        line.setAttribute('opacity', pairedWith ? '1' : '0');
         updateSim();
     };
 
@@ -439,6 +446,7 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
     function updateSim() {
         const phone = document.getElementById('phone');
         const bt = document.getElementById('node-bt');
+        const nfc = document.getElementById('node-nfc');
         const jammer = document.getElementById('node-jammer');
         const booster = document.getElementById('node-booster');
         
@@ -448,40 +456,45 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
         });
 
         const pC = getC(phone);
-        const btC = getC(bt);
-        // SKALA: 30 Meter Gesamtbreite (500px / 30 = 16.6px pro Meter)
-        const distBT = (Math.sqrt(Math.pow(pC.x - btC.x, 2) + Math.pow(pC.y - btC.y, 2)) / 16.6).toFixed(1);
+        const dBT = (Math.sqrt(Math.pow(pC.x - getC(bt).x, 2) + Math.pow(pC.y - getC(bt).y, 2)) / 20).toFixed(1);
+        const dNFC = (Math.sqrt(Math.pow(pC.x - getC(nfc).x, 2) + Math.pow(pC.y - getC(nfc).y, 2)) / 20).toFixed(1);
 
-        document.getElementById('bt-dist').innerText = distBT + "m";
+        document.getElementById('bt-dist').innerText = dBT + "m";
+        document.getElementById('nfc-dist').innerText = dNFC + "m";
 
-        if (pairedWith === 'bt') {
+        let target = pairedWith === 'bt' ? bt : (pairedWith === 'nfc' ? nfc : null);
+
+        if (target) {
+            const tC = getC(target);
             line.setAttribute('x1', pC.x); line.setAttribute('y1', pC.y);
-            line.setAttribute('x2', btC.x); line.setAttribute('y2', btC.y);
+            line.setAttribute('x2', tC.x); line.setAttribute('y2', tC.y);
 
-            let blocked = false;
-            if (wall.style.display !== 'none') {
-                const wX = parseInt(wall.style.left);
-                const wY = parseInt(wall.style.top);
-                if (((pC.x < wX && btC.x > wX) || (pC.x > wX && btC.x < wX)) && (pC.y > wY && pC.y < wY + 200)) blocked = true;
+            if (pairedWith === 'bt') {
+                let blocked = false;
+                if (wall.style.display !== 'none') {
+                    const wX = parseInt(wall.style.left);
+                    const wY = parseInt(wall.style.top);
+                    if (((pC.x < wX && tC.x > wX) || (pC.x > wX && tC.x < wX)) && (pC.y > wY && pC.y < wY + 180)) blocked = true;
+                }
+
+                const env = parseFloat(document.getElementById('env-select').value);
+                const matDamp = materials[document.getElementById('wall-material').value].damp || 0;
+                let base = (document.getElementById('bt-version').value === '4.0') ? -45 : -35;
+                
+                const distToJam = Math.sqrt(Math.pow(pC.x - getC(jammer).x, 2) + Math.pow(pC.y - getC(jammer).y, 2)) / 20;
+                const distToBoo = Math.sqrt(Math.pow(pC.x - getC(booster).x, 2) + Math.pow(pC.y - getC(booster).y, 2)) / 20;
+
+                let rssi = Math.round(base - (dBT * (3 / env)) - (blocked ? matDamp : 0) + (distToJam < 2.5 ? -40 : 0) + (distToBoo < 2.5 ? 15 : 0));
+                
+                document.getElementById('p-label').innerText = "BT LINK";
+                document.getElementById('p-val').innerText = rssi + " dBm";
+                line.setAttribute('stroke', rssi > -70 ? '#198754' : (rssi > -90 ? '#ffc107' : '#dc3545'));
+            } else {
+                let ok = dNFC < 0.8;
+                document.getElementById('p-label').innerText = "NFC";
+                document.getElementById('p-val').innerText = ok ? "TAG OK" : "ZU WEIT";
+                line.setAttribute('stroke', ok ? '#198754' : '#dc3545');
             }
-
-            const env = parseFloat(document.getElementById('env-select').value);
-            const matDamp = materials[document.getElementById('wall-material').value].damp || 0;
-            const btVer = document.getElementById('bt-version').value;
-            let base = (btVer === '4.0') ? -45 : -35;
-
-            // Jammer & Booster Logik (Umkreis ca. 3 Meter)
-            const distJammer = Math.sqrt(Math.pow(pC.x - getC(jammer).x, 2) + Math.pow(pC.y - getC(jammer).y, 2)) / 16.6;
-            const distBooster = Math.sqrt(Math.pow(pC.x - getC(booster).x, 2) + Math.pow(pC.y - getC(booster).y, 2)) / 16.6;
-            
-            let jammerEffect = distJammer < 3 ? -40 : 0;
-            let boosterEffect = distBooster < 3 ? 15 : 0;
-
-            let rssi = Math.round(base - (distBT * (2.5 / env)) - (blocked ? matDamp : 0) + jammerEffect + boosterEffect);
-            
-            document.getElementById('p-label').innerText = "BOX";
-            document.getElementById('p-val').innerText = rssi + " dBm";
-            line.setAttribute('stroke', rssi > -70 ? '#10b981' : (rssi > -90 ? '#f59e0b' : '#ef4444'));
         } else {
             document.getElementById('p-label').innerText = "IDLE";
             document.getElementById('p-val').innerText = "";
