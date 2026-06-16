@@ -587,18 +587,32 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
             const contentBox = document.getElementById("content");
             if (!contentBox) return;
 
-            contentBox.innerHTML = data[name];
+            // NEU: Wir holen uns den Inhalt live vom JSON-Server
+            fetch(`http://localhost:3000/${name}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("Seite nicht gefunden");
+                    return response.json();
+                })
+                .then(data => {
+                    // Wir setzen das HTML aus der JSON-Datei ein
+                    contentBox.innerHTML = data.html;
 
-            const scripts = contentBox.querySelectorAll("script");
-            scripts.forEach(oldScript => {
-                const newScript = document.createElement("script");
-                newScript.text = oldScript.text;
-                document.body.appendChild(newScript).parentNode.removeChild(newScript);
-            });
+                    // Skripte innerhalb des geladenen Contents ausführen (wichtig für die Simulation!)
+                    const scripts = contentBox.querySelectorAll("script");
+                    scripts.forEach(oldScript => {
+                        const newScript = document.createElement("script");
+                        newScript.text = oldScript.text;
+                        document.body.appendChild(newScript).parentNode.removeChild(newScript);
+                    });
+                })
+                .catch(err => {
+                    console.error("Fehler beim Laden vom JSON-Server:", err);
+                    contentBox.innerHTML = `<div class="alert alert-danger">Fehler: JSON-Server läuft nicht oder Eintrag '${name}' fehlt!</div>`;
+                });
 
+            // Pill-Buttons visuell aktivieren/deaktivieren
             document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
-            // Fix: Selektor einfacher geschrieben
-            const activeBtn = document.querySelector('button[onclick="show(\'' + name + '\')"]');
+            const activeBtn = document.querySelector(`button[onclick="show('${name}')"]`);
             if (activeBtn) activeBtn.classList.add('active');
         }
 
@@ -621,6 +635,7 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
                 icon.classList.remove('fa-moon');
                 icon.classList.add('fa-sun');
             }
+            // Lädt beim Start das Intro direkt vom Server
             show("intro");
         });
 
