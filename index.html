@@ -541,7 +541,8 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
             <h4 class="mb-4 text-body" id="quiz-question-text">Hier steht die Frage?</h4>
 
             <div class="d-grid gap-3 mb-4" id="quiz-options-container">
-                </div>
+                <!-- Dynamische Buttons kommen hier rein -->
+            </div>
 
             <div id="quiz-feedback-box" class="alert d-none mb-4" role="alert">
                 <strong id="quiz-feedback-title">Richtig!</strong> <span id="quiz-feedback-text">Erklärungstext</span>
@@ -562,7 +563,6 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
 
 <script>
 (function() {
-        // Die JSON-Datenstruktur für deine Fragen
         const questions = [
             {
                 question: "Welches neue Feature in Bluetooth 6.0 ermöglicht eine zentimetergenaue Ortung?",
@@ -616,27 +616,23 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
             answered = false;
             const q = questions[currentIdx];
 
-            // Status & Progressbar updaten
             document.getElementById('quiz-progress').innerText = "Frage " + (currentIdx + 1) + " von " + questions.length;
             document.getElementById('quiz-score-live').innerText = "Punkte: " + score;
             const percent = ((currentIdx) / questions.length) * 100;
             document.getElementById('quiz-progressbar').style.width = percent + "%";
 
-            // Text setzen
             document.getElementById('quiz-question-text').innerText = q.question;
 
-            // Feedback-Box und Next-Button verstecken
             document.getElementById('quiz-feedback-box').classList.add('d-none');
             document.getElementById('quiz-next-btn').classList.add('d-none');
 
-            // Optionen rendern
             const container = document.getElementById('quiz-options-container');
             container.innerHTML = "";
 
             q.options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = "btn quiz-opt-btn bg-body-tertiary text-start p-3 rounded-3";
-                btn.innerHTML = `< span class= "fw-bold me-2" > ${ String.fromCharCode(65 + idx)}:</span > ${ opt } `;
+                btn.innerHTML = '<span class="fw-bold me-2">' + String.fromCharCode(65 + idx) + ':</span> ' + opt;
                 btn.onclick = () => checkAnswer(idx, btn);
                 container.appendChild(btn);
             });
@@ -650,7 +646,6 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
             const container = document.getElementById('quiz-options-container');
             const buttons = container.querySelectorAll('.quiz-opt-btn');
 
-            // Alle Knöpfe deaktivieren
             buttons.forEach(btn => btn.setAttribute('disabled', 'true'));
 
             const feedbackBox = document.getElementById('quiz-feedback-box');
@@ -668,7 +663,6 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
                 clickedBtn.classList.remove('bg-body-tertiary');
                 clickedBtn.classList.add('btn-danger', 'border-danger');
 
-                // Richtige Antwort grün markieren
                 buttons[q.correct].classList.remove('bg-body-tertiary');
                 buttons[q.correct].classList.add('btn-success', 'border-success');
 
@@ -698,7 +692,7 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
             const resultScreen = document.getElementById('quiz-result-screen');
             resultScreen.classList.remove('d-none');
 
-            document.getElementById('quiz-final-score-text').innerText = `Du hast ${ score } von ${ questions.length } Fragen richtig beantwortet.`;
+            document.getElementById('quiz-final-score-text').innerText = "Du hast " + score + " von " + questions.length + " Fragen richtig beantwortet.";
 
             const emojiBox = document.getElementById('quiz-performance-emoji');
             const ratio = score / questions.length;
@@ -707,13 +701,13 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
             } else if (ratio >= 0.6) {
                 emojiBox.innerText = "🚀 Stabil! Du kennst dich richtig gut aus.";
             } else {
-                emojiBox.innerText = "🏋️‍♂️ Da geht noch mehr, bro! Gleich nochmal versuchen.";
+                emojiBox.innerText = "🏋️‍♂️ Da geht noch mehr! Gleich nochmal versuchen.";
             }
         }
 })();
 <\/script>
 `
-            };
+        };
 
         function show(name) {
             const contentBox = document.getElementById("content");
