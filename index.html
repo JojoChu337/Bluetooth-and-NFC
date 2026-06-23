@@ -89,6 +89,7 @@
                     transform: translateY(-2px);
                 }
 
+        /* --- Floating Buttons --- */
         .theme-fixed-btn {
             position: fixed;
             top: 20px;
@@ -113,7 +114,50 @@
                 box-shadow: 0 6px 20px rgba(0,0,0,0.3);
             }
 
-        [data-bs-theme="dark"] .theme-fixed-btn {
+        /* Neu: Floating Quiz Button */
+        .quiz-fixed-btn {
+            position: fixed;
+            top: 80px; /* Direkt unter dem Darkmode Button */
+            right: 20px;
+            z-index: 2000;
+            background: var(--gradient);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            width: 50px;
+            height: 50px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+            .quiz-fixed-btn:hover {
+                width: 110px; /* Klappt sanft aus */
+                justify-content: flex-start;
+                padding-left: 16px;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            }
+
+            .quiz-fixed-btn .quiz-text {
+                opacity: 0;
+                margin-left: 0;
+                font-weight: bold;
+                font-size: 15px;
+                transition: all 0.3s ease;
+            }
+
+            .quiz-fixed-btn:hover .quiz-text {
+                opacity: 1;
+                margin-left: 10px;
+            }
+
+        [data-bs-theme="dark"] .theme-fixed-btn,
+        [data-bs-theme="dark"] .quiz-fixed-btn {
             border-color: rgba(255,255,255,0.1);
         }
 
@@ -131,9 +175,15 @@
     </style>
 </head>
 <body>
-    <button class="theme-fixed-btn" id="themeToggle" onclick="toggleTheme()">
+    <button class="theme-fixed-btn" id="themeToggle" onclick="toggleTheme()" title="Dark/Light Mode">
         <i class="fas fa-moon" id="themeIcon"></i>
     </button>
+
+    <button class="quiz-fixed-btn" onclick="show('quiz')" title="Zum Quiz-Trainer">
+        <i class="fas fa-graduation-cap"></i>
+        <span class="quiz-text">Quiz</span>
+    </button>
+
     <div class="container my-4 my-md-5">
 
         <header class="text-center mb-5">
@@ -151,7 +201,6 @@
                 <button class="nav-pill px-4 py-2" onclick="show('energy')"><i class="fas fa-battery-full me-2"></i>Energie & IoT</button>
                 <button class="nav-pill px-4 py-2" onclick="show('future')"><i class="fas fa-rocket me-2"></i>Zukunft</button>
                 <button class="nav-pill px-4 py-2" onclick="show('signaltool')"><i class="fas fa-signal me-2"></i>Signal-Tool</button>
-                <button class="nav-pill px-4 py-2" onclick="show('quiz')"><i class="fas fa-graduation-cap me-2"></i>Quiz-Trainer</button>
             </div>
         </nav>
 
@@ -541,8 +590,7 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
             <h4 class="mb-4 text-body" id="quiz-question-text">Hier steht die Frage?</h4>
 
             <div class="d-grid gap-3 mb-4" id="quiz-options-container">
-                <!-- Dynamische Buttons kommen hier rein -->
-            </div>
+                </div>
 
             <div id="quiz-feedback-box" class="alert d-none mb-4" role="alert">
                 <strong id="quiz-feedback-title">Richtig!</strong> <span id="quiz-feedback-text">Erklärungstext</span>
@@ -723,7 +771,8 @@ Im Jahr 2026 sehen wir massive Fortschritte: Bluetooth 6.0 bringt cm-genaue Ortu
             });
 
             document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.querySelector('button[onclick="show(\'' + name + '\')"]');
+            // Wir suchen den Navigation-Pill, nicht den schwebenden Button
+            const activeBtn = document.querySelector('.sticky-nav button[onclick="show(\'' + name + '\')"]');
             if (activeBtn) activeBtn.classList.add('active');
         }
 
